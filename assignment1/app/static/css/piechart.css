@@ -1,0 +1,10 @@
+
+.pie {
+	fill: purple;
+	cursor: crosshair;
+}
+
+.pie:hover {
+	fill: red;
+	cursor: crosshair;
+}

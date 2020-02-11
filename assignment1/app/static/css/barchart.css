@@ -1,0 +1,10 @@
+
+.bar {
+	fill: purple;
+	cursor: crosshair;
+}
+
+.bar:hover {
+	fill: red;
+	cursor: crosshair;
+}
