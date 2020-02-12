@@ -16,16 +16,25 @@ function get_correct_data(area, data, pie, pat) {
         }
     }
 }
-data = get_correct_data(document.getElementById('area_name').value, data)
+all_data = data;
+data = get_correct_data(document.getElementById('area_name').value, data);
 
+document.getElementById('area_form').onsubmit = function (e) {
+    e.preventDefault();
+    data = get_correct_data(document.getElementById('area_name').value, all_data)
 
+    console.log('submit')
 
-document.getElementById('area_name').onchange = function () {
-    data = get_correct_data(document.getElementById('area_name').value, data)
-
+    // fade out
     d3.selectAll('path').transition().delay(function(d, i) {
     return i * 100; }).duration(100).style('opacity', 0)
-    .transition().delay(function(d, i) {
+
+    var map = d3.map(data);
+    data_ready = pie(map.entries());
+
+
+    // come back in
+    d3.selectAll('path').data(data_ready).transition().delay(function(d, i) {
     return i * 250; }).duration(450)
     .style('opacity', 1)
     .attrTween('d', function(d) {
@@ -35,8 +44,8 @@ document.getElementById('area_name').onchange = function () {
             return arc(d)
             }
         })
+        // return false;
 }
-console.log(data)
 
 var width = 0;
 var height = 0;
