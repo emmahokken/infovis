@@ -6,7 +6,6 @@ from decimal import Decimal
 import pandas as pd
 import numpy as np
 
-from app import models, plots, data
 from . import main
 
 
@@ -18,3 +17,7 @@ def index():
 @main.route('/cats', methods = ['GET', 'POST'])
 def cats():
 	return render_template("cats.html")
+
+@main.route('/map', methods = ['GET', 'POST'])
+def map():
+	return render_template("map.html")

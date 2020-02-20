@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Map{% endblock %}
+{% block body %}
+<script type="text/javascript">
+	d3.selectAll(".nav-item").classed("active", false);
+	d3.select("#nav-link-map").classed("active", true);
+</script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+<script src="//datamaps.github.io/scripts/datamaps.world.min.js?v=1"></script>
+<div id="container" style="position: relative; width: 750px; height: 500px;"></div>
+
+
+<script type="text/javascript" src="../static/js/map.js"></script>
+
+{% endblock %}
