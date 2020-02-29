@@ -20,12 +20,13 @@ def cats():
 @main.route('/map', methods = ['GET', 'POST'])
 def map():
 
-	df = pd.read_csv('../../alphabet.csv')
-	df = df[:10]
-	data = df.to_json(orient='records')
+	# df = pd.read_csv('../../alphabet.csv')
+	# df = df[:10]
+	# data = df.to_json(orient='records')
 	# df['country'].replace({"Kenia": "Kenya"}, inplace=True)
-	# print(df['country'][:10])
-	return render_template("map.html", data=data)
+	# return render_template("map.html", data=data)
+
+	return render_template("map.html")
 
 @main.route('/sliders', methods=["GET"])
 def sliders():

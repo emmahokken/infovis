@@ -32,11 +32,11 @@ var map = new Datamap({
 
 // This doesn't work. We need the country codes instead of the country names for this bitr.
 // https://gist.github.com/rendon/fc9d5b02a724979e878e
-for (let i = 0; i < data.length; i++) {
-    var obje = {};
-    obje[data[i]['country']] = '#a00400';
-    map.updateChoropleth(obje);
-}
+// for (let i = 0; i < data.length; i++) {
+//     var obje = {};
+//     obje[data[i]['country']] = '#a00400';
+//     map.updateChoropleth(obje);
+// }
 
 // zoom functions, only australia works
 function gotoAustralia(){
