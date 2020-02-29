@@ -13,11 +13,20 @@ from . import main
 def index():
 	return render_template("home.html")
 
-
 @main.route('/cats', methods = ['GET', 'POST'])
 def cats():
 	return render_template("cats.html")
 
 @main.route('/map', methods = ['GET', 'POST'])
 def map():
-	return render_template("map.html")
+
+	df = pd.read_csv('../../alphabet.csv')
+	df = df[:10]
+	data = df.to_json(orient='records')
+	# df['country'].replace({"Kenia": "Kenya"}, inplace=True)
+	# print(df['country'][:10])
+	return render_template("map.html", data=data)
+
+@main.route('/sliders', methods=["GET"])
+def sliders():
+	return render_template("sliders.html")

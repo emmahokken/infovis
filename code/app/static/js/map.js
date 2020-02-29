@@ -1,8 +1,3 @@
-var data = {
-    'france': 'france has good bread',
-    'ethiopia': 'ijera or enjera is great'
-};
-
 var iconclass = {
     0: 'Abstract, Non-representational Art',
     1: 'Religion and Magic',
@@ -14,7 +9,7 @@ var iconclass = {
     7: 'Bible',
     8: 'Literature',
     9: 'Classical Mythology and Ancient History'
-}
+};
 
 // create map
 var map = new Datamap({
@@ -35,48 +30,84 @@ var map = new Datamap({
     }
 });
 
+// This doesn't work. We need the country codes instead of the country names for this bitr.
+// https://gist.github.com/rendon/fc9d5b02a724979e878e
+for (let i = 0; i < data.length; i++) {
+    var obje = {};
+    obje[data[i]['country']] = '#a00400';
+    map.updateChoropleth(obje);
+}
 
-// map.bubbles([
-//     {name: data['france'], latitude: 61.32, longitude: 17.32, radius: 45, fillKey: 'france'},
-//     {name: data['ethiopia'], latitude: 12.32, longitude: 27.32, radius: 25, fillKey: 'blue'},
-// ])
-
-// zoom functions
+// zoom functions, only australia works
 function gotoAustralia(){
-  map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "scale(1.5)translate(-400,-100)");
+    map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "scale(1.5)translate(-400,-100)");
 }
 function gotoAfrica(){
-  map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "scale(1.5)translate(-300,-100)");
+    map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "scale(1.5)translate(-300,-100)");
 }
 function gotoNorthAmerica(){
-  map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "scale(1.5)translate(-300,-100)");
+    map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "scale(1.5)translate(-300,-100)");
 }
 function gotoSouthAmerica(){
-  map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "scale(1.5)translate(-50,-300)");
+    map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "scale(1.5)translate(-50,-300)");
 }
 function gotoAsia(){
-  map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "scale(1.5)translate(-300,-100)");
+    map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "scale(1.5)translate(-300,-100)");
 }
 function gotoEurope(){
-  map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "scale(1.5)translate(-300,-100)");
+    map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "scale(1.5)translate(-300,-100)");
 }
 function reset(){
-  map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "");
+    map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "");
 }
 
 // set onclick reaction
 map.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
     var obje = {};
-    obje[geography.id] = '#800000'
+    obje[geography.id] = '#800000';
     map.updateChoropleth(obje);
     if (geography.properties.name == "Australia") {
         gotoAustralia();
     }
+})
 
-    get_pop_up(geography)
-    // alert(geography.properties.name);
+// Slider
+var dataTime = d3.range(0, 13).map(function(d) {
+    return new Date(1400 + d*50, 2, 13);
 });
 
-function get_pop_up(geography) {
-    console.log('hello');
-}
+var sliderRange = d3
+    .sliderBottom()
+    .min(d3.min(dataTime))
+    .max(new Date(2020, 2, 13))
+    .width(400)
+    .tickFormat(d3.timeFormat('%Y'))
+    .tickValues(dataTime)
+    .default([new Date(1550, 2, 13), new Date(1830, 2, 13)])
+    .fill('#2196f3')
+    .handle(
+    d3
+        .symbol()
+        .type(d3.symbolCircle)
+        .size(200)()
+    )
+    .on('onchange', val => {
+    d3.select('p#value-range').text(val.map(d3.timeFormat('%Y')).join('-'));
+});
+
+var gRange = d3
+    .select('div#slider-range')
+    .append('svg')
+    .attr('width', 500)
+    .attr('height', 100)
+    .append('g')
+    .attr('transform', 'translate(30,30)');
+
+gRange.call(sliderRange);
+
+d3.select('p#value-range').text(
+    sliderRange
+        .value()
+        .map(d3.timeFormat('%Y'))
+        .join('-')
+    );
