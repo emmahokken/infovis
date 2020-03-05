@@ -1,0 +1,12 @@
+body {
+    background-color: #000000;
+}
+
+h1, h2, h3, p, label {
+    color: white;
+}
+
+.sunburst_container {
+    width: 800px;
+    height: 800px;
+}

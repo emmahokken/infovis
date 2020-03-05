@@ -23,8 +23,17 @@ def map():
 	# df = df[:100]
 	data = df.to_json(orient='records')
 	return render_template("map.html", data=data)
-
 	return render_template("map.html")
+
+@main.route('/sunburst', methods = ['GET', 'POST'])
+def sunburst():
+
+	df = pd.read_csv('../../school_color.csv')
+	# df = df[:100]
+	data = df.to_json(orient='records')
+	return render_template("sunburst.html", data=data)
+	return render_template("sunburst.html")
+
 
 @main.route('/sliders', methods=["GET"])
 def sliders():
