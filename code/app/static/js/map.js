@@ -1,3 +1,62 @@
+d3v3 = d3
+window.d3 = null
+
+function updateColors() {
+    console.log(checked.includes('red'))
+    var timespan = document.querySelector('#value-range').innerHTML;
+    timespan = timespan.split('-');
+    timespan[0] = Number(timespan[0]);
+    timespan[1] = Number(timespan[1]);
+
+    // get colours https://github.com/markmarkoh/datamaps/blob/master/src/examples/highmaps_world.html
+    var freq_obj = {},
+        colour_obj = {},
+        only_values = [];
+
+    // reset frequencies
+    for (let i = 0; i < data.length; i++) {
+        freq_obj[data[i]['ctry_id']] = 0;
+    }
+
+    // if a color is selected, display that color
+    if (checked.length > 0) {
+        // count frequency
+        for (let i = 0; i < data.length; i++) {
+            if (data[i]['creation_year'] > timespan[0] && data[i]['creation_year'] < timespan[1]
+                    && checked.includes(data[i]['color_name'])) {
+                freq_obj[data[i]['ctry_id']]++;
+            }
+        }
+    } else {
+        // count frequency
+        for (let i = 0; i < data.length; i++) {
+            if (data[i]['creation_year'] > timespan[0] && data[i]['creation_year'] < timespan[1]) {
+                freq_obj[data[i]['ctry_id']]++;
+            }
+        }
+    }
+
+    for (let i = 0; i < Object.keys(freq_obj).length; i++) {
+        only_values.push(freq_obj[Object.keys(freq_obj)[i]])
+    }
+
+    var minValue = Math.min.apply(null, only_values),
+        maxValue = Math.max.apply(null, only_values);
+
+    // create color palette function
+    var paletteScale = d3v3.scale.linear()
+        .domain([minValue, maxValue])
+        .range(["#ffecec", "#780000"]);
+
+    for (let i = 0; i < Object.keys(freq_obj).length; i++) {
+        colour_obj[Object.keys(freq_obj)[i]] = paletteScale(freq_obj[Object.keys(freq_obj)[i]])
+    }
+
+    map.updateChoropleth(colour_obj);
+
+}
+
+
 var iconclass = {
     0: 'Abstract, Non-representational Art',
     1: 'Religion and Magic',
@@ -11,16 +70,14 @@ var iconclass = {
     9: 'Classical Mythology and Ancient History'
 };
 
-
-
 // create map
 var map = new Datamap({
-    element: document.getElementById('container'),
+    element: document.getElementById('map-container'),
     projection: 'mercator',
     width: 750,
     height: 550,
     fills: {
-        defaultFill: 'red',
+        defaultFill: '#ffffff',
         blue: 'yellow', // toy fill colours
         Spain: 'green'
     },
@@ -32,26 +89,10 @@ var map = new Datamap({
     }
 });
 
-
-
-
-
-
-
-
-
-// This doesn't work. We need the country codes instead of the country names for this bitr.
-// https://gist.github.com/rendon/fc9d5b02a724979e878e
-// for (let i = 0; i < data.length; i++) {
-//     var obje = {};
-//     obje[data[i]['country']] = '#a00400';
-//     map.updateChoropleth(obje);
-// }
-
-// //zoom functions, only australia works
-// function gotoAustralia(){
-//     map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "scale(1.5)translate(-400,-100)");
-// }
+// zoom functions, only australia works
+function gotoAustralia(){
+    map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "scale(1.5)translate(-400,-100)");
+}
 // function gotoAfrica(){
 //     map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "scale(1.5)translate(-300,-100)");
 // }
@@ -70,71 +111,43 @@ var map = new Datamap({
 // function gotoFrance(){
 //     map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "scale(1.5)translate(-300,-100)");
 // }
-// function reset(){
-//     map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "");
-// }
+function reset(){
+    map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "");
+}
 
 
-
-
-var freqs = {"Russa": 'green', 'France': 'blue', 'Canada': 'red'}
-
-
-
-
-
-
-// set onclick reaction
+// set onclick reaction for map
 map.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
     var obje = {};
     obje[geography.id] = 'green';
-    console.log(obje)
     map.updateChoropleth(obje);
-    // if (geography.properties.name == "Australia") {
-    //     gotoAustralia();
-    // }
-    // if (geography.properties.name == "France") {
-    //     gotoFrance();
-    // }
+
+    if (geography.properties.name == "Australia") {
+        gotoAustralia();
+        obje[geography.id] = 'purple';
+        map.updateChoropleth(obje);
+    } else {
+        reset();
+    }
 })
 
-// // Slider
-// var dataTime = d3.range(0, 13).map(function(d) {
-//     return new Date(1400 + d*50, 2, 13);
-// });
-//
-// var sliderRange = d3
-//     .sliderBottom()
-//     .min(d3.min(dataTime))
-//     .max(new Date(2020, 2, 13))
-//     .width(400)
-//     .tickFormat(d3.timeFormat('%Y'))
-//     .tickValues(dataTime)
-//     .default([new Date(1550, 2, 13), new Date(1830, 2, 13)])
-//     .fill('#2196f3')
-//     .handle(
-//     d3
-//         .symbol()
-//         .type(d3.symbolCircle)
-//         .size(200)()
-//     )
-//     .on('onchange', val => {
-//     d3.select('p#value-range').text(val.map(d3.timeFormat('%Y')).join('-'));
-// });
-//
-// var gRange = d3
-//     .select('div#slider-range')
-//     .append('svg')
-//     .attr('width', 500)
-//     .attr('height', 100)
-//     .append('g')
-//     .attr('transform', 'translate(30,30)');
-//
-// gRange.call(sliderRange);
-//
-// d3.select('p#value-range').text(
-//     sliderRange
-//         .value()
-//         .map(d3.timeFormat('%Y'))
-//         .join('-')
-//     );
+// update map colors once content is loaded
+window.addEventListener('DOMContentLoaded', (event) => {
+    updateColors();
+});
+
+var checked = []
+
+// set onclick reaction for checkboxes
+var checkboxes = d3v3.selectAll('input')
+checkboxes.on('click', function() {
+    checked = []
+    // iterate over all checkboxes to see if it's checked
+    for (let i = 0; i < checkboxes[0].length; i++) {
+        // if checkbox is checked, add it to array
+        if (checkboxes[0][i].checked) {
+            checked.push(checkboxes[0][i].value)
+        }
+    }
+    updateColors();
+})

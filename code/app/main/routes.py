@@ -8,6 +8,7 @@ import numpy as np
 
 from . import main
 
+import webcolors
 
 @main.route('/', methods=['GET'])
 def index():
@@ -20,11 +21,11 @@ def cats():
 @main.route('/map', methods = ['GET', 'POST'])
 def map():
 
-	# df = pd.read_csv('../../alphabet.csv')
-	# df = df[:10]
-	# data = df.to_json(orient='records')
-	# df['country'].replace({"Kenia": "Kenya"}, inplace=True)
-	# return render_template("map.html", data=data)
+	df = pd.read_csv('../../school_color.csv')
+	# df = df[:100]
+	data = df.to_json(orient='records')
+	df['country'].replace({"Kenia": "Kenya"}, inplace=True)
+	return render_template("map.html", data=data)
 
 	return render_template("map.html")
 
