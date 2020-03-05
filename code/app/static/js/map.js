@@ -2,7 +2,6 @@ d3v3 = d3
 window.d3 = null
 
 function updateColors() {
-    console.log(checked.includes('red'))
     var timespan = document.querySelector('#value-range').innerHTML;
     timespan = timespan.split('-');
     timespan[0] = Number(timespan[0]);
@@ -42,7 +41,9 @@ function updateColors() {
 
     var minValue = Math.min.apply(null, only_values),
         maxValue = Math.max.apply(null, only_values);
-
+        
+    console.log(minValue)
+    console.log(maxValue)
     // create color palette function
     var paletteScale = d3v3.scale.linear()
         .domain([minValue, maxValue])
