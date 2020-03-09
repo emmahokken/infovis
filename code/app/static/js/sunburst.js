@@ -11,9 +11,6 @@ var data = {"name": 'flare',
             }
 
 
-
-
-
 partition = data => {
   const root = d3.hierarchy(data)
       .sum(d => d.value)
