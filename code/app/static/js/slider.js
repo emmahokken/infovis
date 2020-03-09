@@ -13,7 +13,7 @@ var sliderRange = d3v5
     .width(400)
     .tickFormat(d3v5.timeFormat('%Y'))
     .tickValues(dataTime)
-    .default([new Date(1550, 2, 13), new Date(1830, 2, 13)])
+    .default([d3v5.min(dataTime), new Date(2020, 2, 13)])
     .fill('#2196f3')
     .handle(
     d3v5
