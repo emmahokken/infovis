@@ -6,13 +6,83 @@
 	d3.select("#nav-link-map").classed("active", true);
 </script>
 
+<!-- D3 scripts -->
+<script src="https://d3js.org/d3.v3.min.js"></script>
 
+
+<!-- Bootstrap scripts -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<!-- Map scrips -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
 <script src="//datamaps.github.io/scripts/datamaps.world.min.js?v=1"></script>
-<div id="container" style="position: relative; width: 750px; height: 500px;"></div>
+
+<script type="text/javascript">
+	var data = {{ data |safe }};
+</script>
 
 
+<div class="container-fluid">
+	<div class="row align-items-center">
+		<div class="col-sm-2">
+			<p id="value-range"></p>
+		</div>
+		<div class="col-sm">
+			<div id="slider-range"></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-2">
+			<form id="colorform">
+				<p>Color:</p>
+				<input type="checkbox" id="red" name="color" value="red">
+				<label for="male">Red</label><br>
+				<input type="checkbox" id="pink" name="color" value="pink">
+				<label for="female">Pink</label><br>
+				<input type="checkbox" id="orange" name="color" value="orange">
+				<label for="other">Orange</label><br>
+				<input type="checkbox" id="yellow" name="color" value="yellow">
+				<label for="other">Yellow</label><br>
+				<input type="checkbox" id="purple" name="color" value="purple">
+				<label for="other">Purple</label><br>
+				<input type="checkbox" id="green" name="color" value="green">
+				<label for="other">Green</label><br>
+				<input type="checkbox" id="blue" name="color" value="blue">
+				<label for="other">Blue</label><br>
+				<input type="checkbox" id="brown" name="color" value="brown">
+				<label for="other">Brown</label><br>
+				<input type="checkbox" id="white" name="color" value="white">
+				<label for="other">White</label><br>
+				<input type="checkbox" id="gray" name="color" value="gray">
+				<label for="other">Gray</label><br>
+			</form>
+		</div>
+		<div class="col-sm-2">
+			<div id="map-container"></div>
+		</div>
+	</div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="../static/css/map.css">
 <script type="text/javascript" src="../static/js/map.js"></script>
+
+
+<!-- Slider -->
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+
+<script type="text/javascript" src="../static/js/slider.js"></script>
+
+
+
+
+<!-- <script>
+</script> -->
+
+<!-- <script type="text/javascript" src="../static/js/barchart.js"></script> -->
 
 {% endblock %}
