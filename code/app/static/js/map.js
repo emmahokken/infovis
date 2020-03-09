@@ -41,7 +41,7 @@ function updateColors() {
 
     var minValue = Math.min.apply(null, only_values),
         maxValue = Math.max.apply(null, only_values);
-        
+
     console.log(minValue)
     console.log(maxValue)
     // create color palette function
@@ -116,6 +116,8 @@ function reset(){
     map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "");
 }
 
+
+console.log("Hello Bob")
 
 // set onclick reaction for map
 map.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
