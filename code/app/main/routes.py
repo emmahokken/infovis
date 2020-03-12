@@ -32,7 +32,6 @@ def sunburst():
 	# df = df[:100]
 	data = df.to_json(orient='records')
 	return render_template("sunburst.html", data=data)
-	return render_template("sunburst.html")
 
 
 @main.route('/sliders', methods=["GET"])

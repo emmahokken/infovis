@@ -75,8 +75,8 @@ var iconclass = {
 var map = new Datamap({
     element: document.getElementById('map-container'),
     projection: 'mercator',
-    width: 750,
-    height: 550,
+    width: 850,
+    height: 650,
     fills: {
         defaultFill: '#ffffff',
         blue: 'yellow', // toy fill colours

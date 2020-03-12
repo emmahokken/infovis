@@ -24,8 +24,11 @@ var sliderRange = d3v5
     .on('onchange', val => {
         d3v5.select('p#value-range').text(val.map(d3v5.timeFormat('%Y')).join('-'));
 
-        updateColors()
+        // update map colors
+        updateColors();
 
+        // update sunburst
+        makeSunburst();
 });
 
 var gRange = d3v5

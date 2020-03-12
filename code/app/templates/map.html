@@ -34,45 +34,28 @@
 			<div id="slider-range"></div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-sm-2">
-			<form id="colorform">
-				<p>Color:</p>
-				<input type="checkbox" id="red" name="color" value="red">
-				<label for="male">Red</label><br>
-				<input type="checkbox" id="pink" name="color" value="pink">
-				<label for="female">Pink</label><br>
-				<input type="checkbox" id="orange" name="color" value="orange">
-				<label for="other">Orange</label><br>
-				<input type="checkbox" id="yellow" name="color" value="yellow">
-				<label for="other">Yellow</label><br>
-				<input type="checkbox" id="purple" name="color" value="purple">
-				<label for="other">Purple</label><br>
-				<input type="checkbox" id="green" name="color" value="green">
-				<label for="other">Green</label><br>
-				<input type="checkbox" id="blue" name="color" value="blue">
-				<label for="other">Blue</label><br>
-				<input type="checkbox" id="brown" name="color" value="brown">
-				<label for="other">Brown</label><br>
-				<input type="checkbox" id="white" name="color" value="white">
-				<label for="other">White</label><br>
-				<input type="checkbox" id="gray" name="color" value="gray">
-				<label for="other">Gray</label><br>
-			</form>
-		</div>
-		<div class="col-sm-2">
+	<div class="row align-items-center">
+		<div class="col-8">
 			<div id="map-container"></div>
 		</div>
+		<div class="col-4">
+			<div class="sunburst_container">
+			    <svg class="sunburst"></svg>
+			</div>
+		</div>
 	</div>
+	<div class="row justify-content-end">
+		<div class="col-xl">
+			<div class="sunburst_container">
+			    <svg class="sunburst"></svg>
+			</div>
+		</div>
+  	</div>
 </div>
 
-<div class="sunburst_container">
-    <svg class="sunburst"></svg>
-</div>
 
 <link rel="stylesheet" type="text/css" href="../static/css/map.css">
 <script type="text/javascript" src="../static/js/map.js"></script>
-
 
 <!-- Slider -->
 <script src="https://d3js.org/d3.v5.min.js"></script>
@@ -81,13 +64,13 @@
 
 <script type="text/javascript" src="../static/js/slider.js"></script>
 
+
 <!-- Sunburst -->
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="https://d3js.org/d3-color.v1.min.js"></script>
 <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="../static/css/sunburst.css">
 <script type="text/javascript" src="../static/js/sunburst.js"></script>
 
 

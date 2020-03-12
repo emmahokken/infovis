@@ -5,3 +5,17 @@ body {
 h1, h2, h3, p, label {
     color: white;
 }
+
+.container-fluid {
+    margin-left: -200px;
+    background-color: orange;
+    width: 1500px;
+}
+
+#map-container {
+    background-color: yellow;
+}
+.sunburst_container {
+    padding-left: 80px;
+    background-color: purple;
+}
