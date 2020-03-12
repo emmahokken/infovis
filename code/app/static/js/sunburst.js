@@ -1,5 +1,8 @@
-//console.log(d3.version)
+console.log(d3.version)
+d3v5 = d3;
+window.d3 = null;
 
+console.log(d3v5.version)
 var data_dict = {"name": 'flare',
                 "children":
                     [
@@ -65,20 +68,20 @@ var data = data_dict;
 //             }
 
 partition = data => {
-  const root = d3.hierarchy(data)
+  const root = d3v5.hierarchy(data)
       .sum(d => d.value)
       .sort((a, b) => b.value - a.value);
-  return d3.partition()
+  return d3v5.partition()
       .size([2 * Math.PI, root.height + 1])
     (root);
 }
 
-color = d3.scaleOrdinal(d3.quantize(d3.interpolateRainbow, data.children.length + 1))
-format = d3.format(",d")
+color = d3v5.scaleOrdinal(d3v5.quantize(d3v5.interpolateRainbow, data.children.length + 1))
+format = d3v5.format(",d")
 width = 932
 radius = width / 6
 
-arc = d3.arc()
+arc = d3v5.arc()
     .startAngle(d => d.x0)
     .endAngle(d => d.x1)
     .padAngle(d => Math.min((d.x1 - d.x0) / 2, 0.005))
@@ -97,7 +100,7 @@ const root = partition(data);
 
 root.each(d => d.current = d);
 
-const svg = d3.select(".sunburst")
+const svg = d3v5.select(".sunburst")
     .attr("viewBox", [0, 0, width, width])
     .style("font", "10px sans-serif");
 
@@ -164,7 +167,7 @@ function clicked(p) {
   path.transition(t)
     .tween("data", d => {
     if (d.depth == 2) { // only update outer ring
-        const i = d3.interpolate(d.current, d.target);
+        const i = d3v5.interpolate(d.current, d.target);
         return t => d.current = i(t);
     }})
 
