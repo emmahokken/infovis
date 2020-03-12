@@ -42,7 +42,7 @@ def sliders():
 @main.route('/fullmap', methods=["GET"])
 def fullmap():
 	df = pd.read_csv('../../school_color.csv')
-	# df = df[:100]
+	df = df[:100]
 	data = df.to_json(orient='records')
 	return render_template("fullmap.html", data=data)
 	return render_template("fullmap.html")
