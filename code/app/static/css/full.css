@@ -9,8 +9,8 @@ h1, h2, h3, p, label {
 .full_container {
     top:0;
     left:0;
-    width: 1000;
-    height: 1000;
+    width: 1000px;
+    height: 1000px;
     /* width: 1200px;
     height: 1200px; */
 }
