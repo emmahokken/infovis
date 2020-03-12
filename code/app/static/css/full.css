@@ -1,0 +1,16 @@
+body {
+    background-color: pink;
+}
+
+h1, h2, h3, p, label {
+    color: white;
+}
+
+.full_container {
+    top:0;
+    left:0;
+    width: 1000;
+    height: 1000;
+    /* width: 1200px;
+    height: 1200px; */
+}

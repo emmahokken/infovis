@@ -98,7 +98,7 @@ const root = partition(data);
 
 root.each(d => d.current = d);
 
-const svg = d3v5.select(".sunburst")
+const svg = d3v5.select(".full")
     .attr("viewBox", [x_start, y_start, width, width])
     .style("font", "10px sans-serif");
 
