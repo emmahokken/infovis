@@ -1,5 +1,6 @@
 body {
     background-color: #000040;
+    width: 100%;
 }
 
 h1, h2, h3, p, label {
@@ -15,6 +16,7 @@ h1, h2, h3, p, label {
 #map-container {
     background-color: yellow;
 }
+
 .sunburst_container {
     padding-left: 80px;
     background-color: purple;
