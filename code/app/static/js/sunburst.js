@@ -1,15 +1,68 @@
 //console.log(d3.version)
-console.log("hello worlds")
-var data = {"name": 'flare',
-            "children":
-                [
-                    {"name": 'red', "children": [{"name": 'firebrick', "value": 10},{"name": 'lightcoral', "value": 15},{"name": 'indianred', "value": 5}]},
-                    {"name": 'blue', "children": [{"name": 'AQUAMARINE', "value": 2},{"name": 'skyblue', "value": 30},{"name": 'navy', "value": 20}]},
-                    {"name": 'green', "children": [{"name": 'Lime', "value": 2},{"name": 'SeaGreen', "value": 30},{"name": 'forestgreen', "value": 20}]},
-                    {"name": 'yellow', "children": [{"name": 'LEMONCHIFFON', "value": 10},{"name": 'KHAKI', "value": 10},{"name": 'GOLD', "value": 10}]}
-                ]
-            }
 
+var data_dict = {"name": 'flare',
+                "children":
+                    [
+                        {"name": 'red', "children": []},
+                        {"name": 'blue', "children": []},
+                        {"name": 'green', "children": []},
+                        {"name": 'yellow', "children": []},
+                        {"name": 'pink', "children": []},
+                        {"name": 'brown', "children": []},
+                        {"name": 'gray', "children": []},
+                        {"name": 'purple', "children": []},
+                        {"name": 'orange', "children": []},
+                        {"name": 'white', "children": []},
+                    ]
+                }
+
+var det_name = {};
+for (let i = 0; i < data.length; i++) {
+    det_name[data[i]['detailed_color_name']] = data[i]['color_name'];
+}
+
+var freq_obj = {};
+// reset frequencies
+for (let i = 0; i < data.length; i++) {
+    freq_obj[data[i]['detailed_color_name']] = 0;
+}
+
+for (let i = 0; i < data.length; i++) {
+    freq_obj[data[i]['detailed_color_name']]++;
+}
+
+var color_keys = Object.keys(freq_obj)
+for (let i = 0; i < color_keys.length; i++) {
+    var val = freq_obj[color_keys[i]];
+    var detail = color_keys[i];
+    var name = det_name[detail];
+    for (let j = 0; j < data_dict['children'].length; j++) {
+        if (data_dict['children'][j]['name'] == name) {
+            data_dict['children'][j]['children'].push({"name": detail, "value": val});
+        }
+    }
+}
+
+//
+// for (let i = 0; i < Object.keys(freq_obj).length; i++) {
+//     for (let j = 0; j < data_dict['children'].length; j++) {
+//         if (data_dict['children'][j]['name'] == data[i]['color_name']) {
+//             data_dict['children'][j]['children'].push({"name": data[i]['detailed_color_name'], "value": freq_obj[data[i]['detailed_color_name']]})
+//         }
+//     }
+// }
+console.log(freq_obj)
+console.log(data_dict)
+var data = data_dict;
+// var data = {"name": 'flare',
+//             "children":
+//                 [
+//                     {"name": 'red', "children": [{"name": 'firebrick', "value": 10},{"name": 'lightcoral', "value": 15},{"name": 'indianred', "value": 5}]},
+//                     {"name": 'blue', "children": [{"name": 'AQUAMARINE', "value": 2},{"name": 'skyblue', "value": 30},{"name": 'navy', "value": 20}]},
+//                     {"name": 'green', "children": [{"name": 'Lime', "value": 2},{"name": 'SeaGreen', "value": 30},{"name": 'forestgreen', "value": 20}]},
+//                     {"name": 'yellow', "children": [{"name": 'LEMONCHIFFON', "value": 10},{"name": 'KHAKI', "value": 10},{"name": 'GOLD', "value": 10}]}
+//                 ]
+//             }
 
 partition = data => {
   const root = d3.hierarchy(data)
@@ -47,21 +100,18 @@ const svg = d3.select(".sunburst")
 const g = svg.append("g")
     .attr("transform", `translate(${width / 2},${width / 2})`);
 
+
 const path = g.append("g")
   .selectAll("path")
   .data(root.descendants().slice(1))
   .join("path")
     .attr("fill", d => { while (d.depth > 1) d = d.parent; return d.data.name; })
     .attr("fill", d => { while (d.depth > 2) d = d.parent; return d.data.name; })
-    //.attr("fill", d => { while (d.depth > 1) d = d.parent; return color(d.data.name); })
-    //.attr("fill-opacity", d => arcVisible(d.current) ? (d.children ? 0.6 : 0.4) : 0)
     .attr("d", d => arc(d.current));
-
-
 
 path.filter(d => d.children)
     .style("cursor", "pointer")
-    .on("click", clicked);
+    .on("click", clicked)
 
 path.append("title")
     .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${format(d.value)}`);
@@ -79,14 +129,12 @@ const label = g.append("g")
     .text(d => d.data.name);
 
 const parent = g.append("circle")
+    .style("cursor", "pointer")
     .datum(root)
     .attr("r", radius)
     .attr("fill", "none")
     .attr("pointer-events", "all")
     .on("click", clicked);
-
-
-
 
 /*
 
@@ -99,13 +147,10 @@ const parent = g.append("circle")
 
 
 
-
-
-
-
 function clicked(p) {
   parent.datum(p.parent || root);
 
+  console.log(p)
   root.each(d => d.target = {
     x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
     x1: Math.max(0, Math.min(1, (d.x1 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
@@ -119,24 +164,18 @@ function clicked(p) {
   // so that if this transition is interrupted, entering arcs will start
   // the next transition from the desired position.
   path.transition(t)
-      .tween("data", d => {
-        if (d.depth == 2) { // only update outer ring
-            if (p.data['name'] == d.parent.data['name']) {
-                console.log(d.parent.data['name'])
-                const i = d3.interpolate(d.current, d.target);
-                return t => d.current = i(t);
-      }}})
-    .filter(function(d) {
-      return +this.getAttribute("fill-opacity") || arcVisible(d.target);
-    })
-      .attr("fill-opacity", d => 100)
-      .attrTween("d", d => () => arc(d.current));
+    .tween("data", d => {
+    if (d.depth == 2) { // only update outer ring
+        const i = d3.interpolate(d.current, d.target);
+        return t => d.current = i(t);
+    }})
 
-  label.filter(function(d) {
-      return +this.getAttribute("fill-opacity") || labelVisible(d.target);
-    }).transition(t)
-      .attr("fill-opacity", d => +labelVisible(d.target))
-      .attrTween("transform", d => () => labelTransform(d.current));
+    .filter(function(d) {
+        return +this.getAttribute("fill-opacity") || arcVisible(d.target);
+    })
+        .attr("fill-opacity", d => 100)
+        .attrTween("d", d => () => arc(d.current));
+
 }
 
 function arcVisible(d) {
