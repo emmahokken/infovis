@@ -88,12 +88,8 @@ arc = d3v5.arc()
     .padRadius(radius * 1.5)
     .innerRadius(d => d.y0 * radius)
     .outerRadius(d => Math.max(d.y0 * radius, d.y1 * radius - 1))
-
-
-
-
-
-
+    // .attr("transform", "translate(500, 400)")
+    // .attr("cx", "10")
 
 
 const root = partition(data);
@@ -141,10 +137,16 @@ const parent = g.append("circle")
     .attr("r", radius)
     .attr("fill", "none")
     .attr("pointer-events", "all")
-    .on("click", clicked)
+    .on("click", clicked);
 
+/*
 
+    x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
+    x1: Math.max(0, Math.min(1, (d.x1 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
+    y0: Math.max(0, d.y0 - p.depth),
+    y1: Math.max(0, d.y1 - p.depth)
 
+*/
 
 
 
