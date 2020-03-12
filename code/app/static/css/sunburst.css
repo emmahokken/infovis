@@ -7,6 +7,8 @@ h1, h2, h3, p, label {
 }
 
 .sunburst_container {
+    top:100;
+    left:100;
     width: 800px;
     height: 800px;
 }
