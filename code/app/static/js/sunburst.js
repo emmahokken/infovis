@@ -1,15 +1,68 @@
 //console.log(d3.version)
-console.log("hello worlds")
-var data = {"name": 'flare',
-            "children":
-                [
-                    {"name": 'red', "children": [{"name": 'firebrick', "value": 10},{"name": 'lightcoral', "value": 15},{"name": 'indianred', "value": 5}]},
-                    {"name": 'blue', "children": [{"name": 'AQUAMARINE', "value": 2},{"name": 'skyblue', "value": 30},{"name": 'navy', "value": 20}]},
-                    {"name": 'green', "children": [{"name": 'Lime', "value": 2},{"name": 'SeaGreen', "value": 30},{"name": 'forestgreen', "value": 20}]},
-                    {"name": 'yellow', "children": [{"name": 'LEMONCHIFFON', "value": 10},{"name": 'KHAKI', "value": 10},{"name": 'GOLD', "value": 10}]}
-                ]
-            }
 
+var data_dict = {"name": 'flare',
+                "children":
+                    [
+                        {"name": 'red', "children": []},
+                        {"name": 'blue', "children": []},
+                        {"name": 'green', "children": []},
+                        {"name": 'yellow', "children": []},
+                        {"name": 'pink', "children": []},
+                        {"name": 'brown', "children": []},
+                        {"name": 'gray', "children": []},
+                        {"name": 'purple', "children": []},
+                        {"name": 'orange', "children": []},
+                        {"name": 'white', "children": []},
+                    ]
+                }
+
+var det_name = {};
+for (let i = 0; i < data.length; i++) {
+    det_name[data[i]['detailed_color_name']] = data[i]['color_name'];
+}
+
+var freq_obj = {};
+// reset frequencies
+for (let i = 0; i < data.length; i++) {
+    freq_obj[data[i]['detailed_color_name']] = 0;
+}
+
+for (let i = 0; i < data.length; i++) {
+    freq_obj[data[i]['detailed_color_name']]++;
+}
+
+var color_keys = Object.keys(freq_obj)
+for (let i = 0; i < color_keys.length; i++) {
+    var val = freq_obj[color_keys[i]];
+    var detail = color_keys[i];
+    var name = det_name[detail];
+    for (let j = 0; j < data_dict['children'].length; j++) {
+        if (data_dict['children'][j]['name'] == name) {
+            data_dict['children'][j]['children'].push({"name": detail, "value": val});
+        }
+    }
+}
+
+//
+// for (let i = 0; i < Object.keys(freq_obj).length; i++) {
+//     for (let j = 0; j < data_dict['children'].length; j++) {
+//         if (data_dict['children'][j]['name'] == data[i]['color_name']) {
+//             data_dict['children'][j]['children'].push({"name": data[i]['detailed_color_name'], "value": freq_obj[data[i]['detailed_color_name']]})
+//         }
+//     }
+// }
+console.log(freq_obj)
+console.log(data_dict)
+var data = data_dict;
+// var data = {"name": 'flare',
+//             "children":
+//                 [
+//                     {"name": 'red', "children": [{"name": 'firebrick', "value": 10},{"name": 'lightcoral', "value": 15},{"name": 'indianred', "value": 5}]},
+//                     {"name": 'blue', "children": [{"name": 'AQUAMARINE', "value": 2},{"name": 'skyblue', "value": 30},{"name": 'navy', "value": 20}]},
+//                     {"name": 'green', "children": [{"name": 'Lime', "value": 2},{"name": 'SeaGreen', "value": 30},{"name": 'forestgreen', "value": 20}]},
+//                     {"name": 'yellow', "children": [{"name": 'LEMONCHIFFON', "value": 10},{"name": 'KHAKI', "value": 10},{"name": 'GOLD', "value": 10}]}
+//                 ]
+//             }
 
 partition = data => {
   const root = d3.hierarchy(data)
