@@ -32,12 +32,8 @@ arc = d3.arc()
     .padRadius(radius * 1.5)
     .innerRadius(d => d.y0 * radius)
     .outerRadius(d => Math.max(d.y0 * radius, d.y1 * radius - 1))
-
-
-
-
-
-
+    // .attr("transform", "translate(500, 400)")
+    // .attr("cx", "10")
 
 
 const root = partition(data);
@@ -60,7 +56,6 @@ const path = g.append("g")
     //.attr("fill", d => { while (d.depth > 1) d = d.parent; return color(d.data.name); })
     //.attr("fill-opacity", d => arcVisible(d.current) ? (d.children ? 0.6 : 0.4) : 0)
     .attr("d", d => arc(d.current));
-
 
 
 
@@ -89,6 +84,7 @@ const parent = g.append("circle")
     .attr("fill", "none")
     .attr("pointer-events", "all")
     .on("click", clicked);
+
 
 
 
