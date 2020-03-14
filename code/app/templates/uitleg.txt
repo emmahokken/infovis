@@ -1,0 +1,5 @@
+map.html: in deze map.html werken de sunburst, slider en map allemaal tegelijk. Alleen staat alles dus nog niet op de goede plek. Dat was in de vorige map.html (dit op github) wel het geval. Moet dus soort van gecombineerd worden.
+
+slider.css: deze is niet en moet de oude slider.css vervangen.
+
+slider.js: deze is ook nieuw en moet de oude slider vervangen

@@ -35,13 +35,16 @@
 		</div>
 	</div>
 	<div class="row align-items-center">
-		<div class="col-8">
-			<div id="map-container"></div>
-		</div>
 		<div class="col-4">
 			<div class="sunburst_container">
 			    <svg class="sunburst"></svg>
 			</div>
+		</div>
+		<div class="col-7">
+			<div id="map-container"></div>
+		</div>
+		<div class="col-1">
+			<div id="legend"></div>
 		</div>
 	</div>
 </div>
@@ -57,6 +60,14 @@
 
 <script type="text/javascript" src="../static/js/slider.js"></script>
 
+
+
+<!-- Legend -->
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../static/css/legend.css">
+<script type="text/javascript" src="../static/js/legend.js"></script>
 
 <!-- Sunburst -->
 <script src="https://d3js.org/d3.v5.min.js"></script>

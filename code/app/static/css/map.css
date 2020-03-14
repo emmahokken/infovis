@@ -8,9 +8,9 @@ h1, h2, h3, p, label {
 }
 
 .container-fluid {
-    margin-left: -200px;
+    margin-left: -250px;
     background-color: orange;
-    width: 1500px;
+    width: 1600px;
 }
 
 #map-container {
@@ -18,6 +18,6 @@ h1, h2, h3, p, label {
 }
 
 .sunburst_container {
-    padding-left: 80px;
+    /* padding-left: 8  0px; */
     background-color: purple;
 }

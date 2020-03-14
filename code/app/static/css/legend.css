@@ -1,0 +1,12 @@
+#legend {
+    background-color: red;
+    width: 1000px;
+    height: 70px;
+    transform: rotate(90deg);
+    margin-left: -450px;
+    margin-top: 400px;
+    margin-right: -2000px;
+}
+.col-2 {
+    width: 10px;
+}

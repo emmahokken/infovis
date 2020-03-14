@@ -26,6 +26,7 @@ function getData() {
     timespan[0] = Number(timespan[0]);
     timespan[1] = Number(timespan[1]);
 
+    console.log(timespan)
 
     // save all occurances of detailed color names and reset frequencies
     var det_name = {};
@@ -54,7 +55,7 @@ function getData() {
             }
         }
     }
-
+    console.log(data_dict)
     return data_dict;
 }
 
@@ -146,8 +147,8 @@ function makeSunburst() {
 
     function clicked(p) {
       parent.datum(p.parent || root);
-
-      console.log(p)
+      console.log('PARENT')
+      console.log(p.data.name)
       root.each(d => d.target = {
         x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
         x1: Math.max(0, Math.min(1, (d.x1 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
