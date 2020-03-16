@@ -46,14 +46,14 @@ body {
 
 <script>
 var data = [ { label: "France",
-               x: [1900, 1901, 1902, 1903, 1904],
-               y: [0, 1, 2, 3, 4] },
+               x: [1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990],
+               y: [0, 1, 2, 3, 4, 0, 1, 2, 3, 4] },
              { label: "Spain",
-               x: [1900, 1901, 1902, 1903, 1904],
-               y: [0, 1, 4, 9, 16] },
+               x: [1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990],
+               y: [0, 1, 4, 9, 16, 0, 1, 4, 9, 16] },
              { label: "Italy",
-               x: [1900, 1901, 1902, 1903, 1904],
-               y: [40, 30, 32, 20, 8] },
+               x: [1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990],
+               y: [40, 30, 32, 20, 8, 40, 30, 32, 20, 8] },
            ] ;
 
 
@@ -61,8 +61,9 @@ var data = [ { label: "France",
 var xy_chart = d3_xy_chart()
     .width(960)
     .height(500)
-    .xlabel("X Axis")
-    .ylabel("Y Axis") ;
+    .xlabel("Year")
+    .ylabel("Number of art objects") ;
+
 var svg = d3.select("body").append("svg")
     .datum(data)
     .call(xy_chart) ;
@@ -75,10 +76,8 @@ function d3_xy_chart() {
 
     function chart(selection) {
         selection.each(function(datasets) {
-            //
-            // Create the plot.
-            //
-            var margin = {top: 20, right: 80, bottom: 30, left: 50},
+
+            var margin = {top: 40, right: 80, bottom: 40, left: 40},
                 innerwidth = width - margin.left - margin.right,
                 innerheight = height - margin.top - margin.bottom ;
 
@@ -140,9 +139,9 @@ function d3_xy_chart() {
                 .attr("transform", "translate(0," + innerheight + ")")
                 .call(x_axis)
                 .append("text")
-                .attr("dy", "-.71em")
-                .attr("x", innerwidth)
-                .style("text-anchor", "end")
+                .attr("y", margin.top)
+                .attr("x", innerwidth/2)
+                .style("text-anchor", "middle")
                 .text(xlabel) ;
 
             svg.append("g")
@@ -150,9 +149,10 @@ function d3_xy_chart() {
                 .call(y_axis)
                 .append("text")
                 .attr("transform", "rotate(-90)")
-                .attr("y", 6)
-                .attr("dy", "0.71em")
-                .style("text-anchor", "end")
+                .attr("y", -margin.left)
+                .attr("x", -(height / 2))
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
                 .text(ylabel) ;
 
             var data_lines = svg.selectAll(".d3_xy_chart_line")
