@@ -9,15 +9,15 @@ h1, h2, h3, p, label {
 
 .container-fluid {
     margin-left: -250px;
-    background-color: orange;
+    /* background-color: orange; */
     width: 1600px;
 }
 
 #map-container {
-    background-color: yellow;
+    /* background-color: yellow; */
 }
 
 .sunburst_container {
     /* padding-left: 8  0px; */
-    background-color: purple;
+    /* background-color: purple; */
 }

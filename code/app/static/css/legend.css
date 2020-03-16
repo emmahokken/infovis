@@ -1,5 +1,5 @@
 #legend {
-    background-color: red;
+    /* background-color: pink; */
     width: 1000px;
     height: 70px;
     transform: rotate(90deg);
@@ -7,6 +7,15 @@
     margin-top: 400px;
     margin-right: -2000px;
 }
+.y_axis text {
+    fill: white;
+}
+
+.y_axis path,
+.y_axis line {
+    stroke: white;
+}
+
 .col-2 {
     width: 10px;
 }

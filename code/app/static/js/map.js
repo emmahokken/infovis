@@ -1,5 +1,35 @@
 d3v3 = d3
 window.d3 = null
+function getClickedColors() {
+    var checked = [];
+
+    if (document.getElementById('none').checked == false) {
+        var checkboxes = d3v3.selectAll('input')
+
+        // iterate over all checkboxes to see if it's checked
+        for (let i = 0; i < checkboxes[0].length; i++) {
+            // if checkbox is checked, add it to array
+            if (checkboxes[0][i].checked) {
+                checked.push(checkboxes[0][i].value)
+            }
+        }
+    }
+
+    return checked;
+}
+
+function uncheckColors() {
+    // remove all checks
+    var checkboxes = d3v3.selectAll('input')
+
+    // iterate over all checkboxes to see if it's checked
+    for (let i = 0; i < checkboxes[0].length; i++) {
+        // if checkbox is checked, uncheck it
+        if (checkboxes[0][i].checked) {
+            checkboxes[0][i].checked = false;
+        }
+    }
+}
 
 function updateColors() {
     var timespan = document.querySelector('#value-range').innerHTML;
@@ -10,7 +40,8 @@ function updateColors() {
     // get colours https://github.com/markmarkoh/datamaps/blob/master/src/examples/highmaps_world.html
     var freq_obj = {},
         colour_obj = {},
-        only_values = [];
+        only_values = [],
+        checked = getClickedColors();
 
     // reset frequencies
     for (let i = 0; i < data.length; i++) {
@@ -44,6 +75,7 @@ function updateColors() {
 
     console.log(minValue)
     console.log(maxValue)
+
     // create color palette function
     var paletteScale = d3v3.scale.linear()
         .domain([minValue, maxValue])
@@ -54,7 +86,8 @@ function updateColors() {
     }
 
     map.updateChoropleth(colour_obj);
-
+    makeLegend();
+    uncheckColors();
 }
 
 
@@ -115,9 +148,6 @@ function gotoAustralia(){
 function reset(){
     map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "");
 }
-
-
-console.log("Hello Bob")
 
 // set onclick reaction for map
 map.svg.selectAll('.datamaps-subunit').on('click', function(geography) {

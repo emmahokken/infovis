@@ -26,8 +26,6 @@ function getData() {
     timespan[0] = Number(timespan[0]);
     timespan[1] = Number(timespan[1]);
 
-    console.log(timespan)
-
     // save all occurances of detailed color names and reset frequencies
     var det_name = {};
     var freq_obj = {};
@@ -55,7 +53,7 @@ function getData() {
             }
         }
     }
-    console.log(data_dict)
+    
     return data_dict;
 }
 
@@ -115,17 +113,17 @@ function makeSunburst() {
     path.append("title")
         .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${format(d.value)}`);
 
-    const label = g.append("g")
-        .attr("pointer-events", "none")
-        .attr("text-anchor", "middle")
-        .style("user-select", "none")
-      .selectAll("text")
-      .data(root.descendants().slice(1))
-      .join("text")
-        .attr("dy", "0.35em")
-        //.attr("fill-opacity", d => +labelVisible(d.current))
-        .attr("transform", d => labelTransform(d.current))
-        .text(d => d.data.name);
+    // const label = g.append("g")
+    //     .attr("pointer-events", "none")
+    //     .attr("text-anchor", "middle")
+    //     .style("user-select", "none")
+    //   .selectAll("text")
+    //   .data(root.descendants().slice(1))
+    //   .join("text")
+    //     .attr("dy", "0.35em")
+    //     //.attr("fill-opacity", d => +labelVisible(d.current))
+    //     .attr("transform", d => labelTransform(d.current))
+    //     .text(d => d.data.name);
 
     const parent = g.append("circle")
         .style("cursor", "pointer")
@@ -146,9 +144,18 @@ function makeSunburst() {
 
 
     function clicked(p) {
+
       parent.datum(p.parent || root);
-      console.log('PARENT')
-      console.log(p.data.name)
+      // check invisible checkbox if color is clicked
+      if (p.data.name != 'flare') {
+          var boxie = document.getElementById(p.data.name);
+          boxie.checked = true;
+      } else {
+          var boxie = document.getElementById('none');
+          boxie.checked = true;
+
+      }
+
       root.each(d => d.target = {
         x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
         x1: Math.max(0, Math.min(1, (d.x1 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
@@ -174,6 +181,8 @@ function makeSunburst() {
             .attr("fill-opacity", d => 100)
             .attrTween("d", d => () => arc(d.current));
 
+        // update map colors
+        updateColors();
     }
 
 }
