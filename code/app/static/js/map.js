@@ -87,6 +87,22 @@ function updateColors() {
 
     map.updateChoropleth(colour_obj);
     makeLegend();
+    makeSunburst();
+    if (checked.length == 0 && selected.length > 0) {
+        document.getElementById("line_title").innerHTML = "You've selected " + selected.join(' and ') + ", now select a color.";
+
+        makeLineGraph(selected, checked);
+    } else if (selected.length > 0) {
+        // update plot title
+        document.getElementById("line_title").innerHTML = "Paintings with the color " + checked.join() + " for " + selected.join(' and ');
+
+        makeLineGraph(selected, checked);
+    } else {
+        document.getElementById("line_title").innerHTML = "";
+
+        deleteLineGraph();
+    }
+
     uncheckColors();
 }
 
@@ -111,7 +127,7 @@ var map = new Datamap({
     width: 850,
     height: 650,
     fills: {
-        defaultFill: '#ffffff',
+        defaultFill: '#000000',
         blue: 'yellow', // toy fill colours
         Spain: 'green'
     },
@@ -149,11 +165,24 @@ function reset(){
     map.svg.selectAll(".datamaps-subunits").transition().duration(750).attr("transform", "");
 }
 
+var selected = [];
 // set onclick reaction for map
 map.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
-    var obje = {};
-    obje[geography.id] = 'green';
-    map.updateChoropleth(obje);
+    if (countries.includes(geography.id)) {
+        if (selected.includes(geography.id)) {
+            var ind = selected.indexOf(geography.id);
+            selected.splice(ind, 1);
+        } else if (selected.length > 2) {
+            alert('You can only select up to three countries, please deselect ' + selected.join(' or '))
+        } else if (selected.includes(geography.id) == false) {
+            selected.push(geography.id);
+        }
+    } else {
+        alert("Sorry, no data exists for " + geography.id)
+    }
+
+    updateColors()
+
 
     if (geography.properties.name == "Australia") {
         gotoAustralia();
@@ -162,6 +191,8 @@ map.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
     } else {
         reset();
     }
+
+
 })
 
 // update map colors once content is loaded
@@ -171,16 +202,16 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 var checked = []
 
-// set onclick reaction for checkboxes
-var checkboxes = d3v3.selectAll('input')
-checkboxes.on('click', function() {
-    checked = []
-    // iterate over all checkboxes to see if it's checked
-    for (let i = 0; i < checkboxes[0].length; i++) {
-        // if checkbox is checked, add it to array
-        if (checkboxes[0][i].checked) {
-            checked.push(checkboxes[0][i].value)
-        }
-    }
-    updateColors();
-})
+// // set onclick reaction for checkboxes
+// var checkboxes = d3v3.selectAll('input')
+// checkboxes.on('click', function() {
+//     checked = []
+//     // iterate over all checkboxes to see if it's checked
+//     for (let i = 0; i < checkboxes[0].length; i++) {
+//         // if checkbox is checked, add it to array
+//         if (checkboxes[0][i].checked) {
+//             checked.push(checkboxes[0][i].value)
+//         }
+//     }
+//     updateColors();
+// })

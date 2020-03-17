@@ -25,12 +25,10 @@ var sliderRange = d3v5
         d3v5.select('p#value-range').text(val.map(d3v5.timeFormat('%Y')).join('-'));
 
         document.getElementById('none').checked = true;
-        
+
         // update map colors
         updateColors();
 
-        // update sunburst
-        makeSunburst();
 });
 
 var gRange = d3v5
