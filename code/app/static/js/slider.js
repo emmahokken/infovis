@@ -29,6 +29,8 @@ var sliderRange = d3v5
         // update map colors
         updateColors();
 
+        // update sunburst
+        makeSunburst();
 });
 
 var gRange = d3v5

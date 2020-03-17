@@ -53,7 +53,7 @@ function getData() {
             }
         }
     }
-    
+
     return data_dict;
 }
 
@@ -145,15 +145,16 @@ function makeSunburst() {
 
     function clicked(p) {
 
+        console.log("hello????????");
       parent.datum(p.parent || root);
       // check invisible checkbox if color is clicked
       if (p.data.name != 'flare') {
           var boxie = document.getElementById(p.data.name);
           boxie.checked = true;
+          console.log('?efa?')
       } else {
           var boxie = document.getElementById('none');
           boxie.checked = true;
-
       }
 
       root.each(d => d.target = {
@@ -174,18 +175,19 @@ function makeSunburst() {
             const i = d3v5.interpolate(d.current, d.target);
             return t => d.current = i(t);
         }})
-
         .filter(function(d) {
             return +this.getAttribute("fill-opacity") || arcVisible(d.target);
         })
             .attr("fill-opacity", d => 100)
             .attrTween("d", d => () => arc(d.current));
 
-        // update map colors
-        updateColors();
+            // update map colors
+            updateColors();
+
     }
 
 }
+
 function arcVisible(d) {
   return d.y1 <= 3 && d.y0 >= 1 && d.x1 > d.x0;
 }

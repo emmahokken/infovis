@@ -87,7 +87,7 @@ function updateColors() {
 
     map.updateChoropleth(colour_obj);
     makeLegend();
-    makeSunburst();
+    // makeSunburst();
     if (checked.length == 0 && selected.length > 0) {
         document.getElementById("line_title").innerHTML = "You've selected " + selected.join(' and ') + ", now select a color.";
 
@@ -182,7 +182,7 @@ map.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
     }
 
     updateColors()
-
+    makeSunburst()
 
     if (geography.properties.name == "Australia") {
         gotoAustralia();
