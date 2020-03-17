@@ -22,7 +22,10 @@ def map():
 	df = pd.read_csv('../../school_color.csv')
 	df = df[:100]
 	data = df.to_json(orient='records')
-	return render_template("map.html", data=data)
+	countries = df['ctry_id'].unique()
+	countries = list(countries)
+	print(countries)
+	return render_template("map.html", data=data, countries=countries)
 	return render_template("map.html")
 
 @main.route('/sunburst', methods = ['GET', 'POST'])

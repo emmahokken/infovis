@@ -1,16 +1,16 @@
 d3v3 = d3;
 window.d3 = null;
 
-var dataa = [ { label: "France",
-               x: [1900, 1901, 1902, 1903, 1904],
-               y: [0, 1, 2, 3, 4] },
-             { label: "Spain",
-               x: [1900, 1901, 1902, 1903, 1904],
-               y: [0, 1, 4, 9, 16] },
-             { label: "Italy",
-               x: [1900, 1901, 1902, 1903, 1904],
-               y: [40, 30, 32, 20, 8] },
-           ];
+// var dataa = [ { label: "France",
+//                x: [1900, 1901, 1902, 1903, 1904],
+//                y: [0, 1, 2, 3, 4] },
+//              { label: "Spain",
+//                x: [1900, 1901, 1902, 1903, 1904],
+//                y: [0, 1, 4, 9, 16] },
+//              { label: "Italy",
+//                x: [1900, 1901, 1902, 1903, 1904],
+//                y: [40, 30, 32, 20, 8] },
+//            ];
 
 var timespan = document.querySelector('#value-range').innerHTML;
 timespan = timespan.split('-');
@@ -21,11 +21,31 @@ var timescale = d3v3.scale.linear()
     .domain([timespan[0], timespan[1]])
     .range([timespan[0], timespan[1]]);
 
-// need to count paintings which have
-//      dominant color equal to selected
-//   for
-//      each year within timespan
-//      each country
+obj_of_times = {}
+for (var i = timespan[0]; i < timespan[1]; i++) {
+    obj_of_times[i] = 0
+}
+
+country_obj = {}
+for (var i = 0; i < countries.length; i++) {
+    country_obj[countries[i]] = [obj_of_times];
+}
+
+for (var i = 0; i < data.length; i++) {
+    if (data[i]['creation_year'] > timespan[0] && data[i]['creation_year'] < timespan[1]) {
+        country_obj[data[i]['ctry_id']][0][data[i]['creation_year']]++;
+    }
+}
+
+dataa = []
+var years = Object.keys(obj_of_times);
+for (var i = 0; i < countries.length; i++) {
+    var values = Object.keys(country_obj[countries[i]][0]).map(function(key){
+        return country_obj['ITA'][0][key];
+    });
+    dataa.push({label: countries[i], x: years, y: values});
+
+}
 
 var xy_chart = d3_xy_chart()
     .width(960)
