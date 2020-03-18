@@ -32,11 +32,11 @@ function uncheckColors() {
 }
 
 function updateColors() {
-    var timespan = document.querySelector('#value-range').innerHTML;
-    timespan = timespan.split('-');
+    var timespan = document.querySelector('#range-label').innerHTML;
+    timespan = timespan.split(' - ');
     timespan[0] = Number(timespan[0]);
     timespan[1] = Number(timespan[1]);
-
+    console.log(timespan[0])
     // get colours https://github.com/markmarkoh/datamaps/blob/master/src/examples/highmaps_world.html
     var freq_obj = {},
         colour_obj = {},
@@ -172,10 +172,18 @@ map.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
         if (selected.includes(geography.id)) {
             var ind = selected.indexOf(geography.id);
             selected.splice(ind, 1);
+            var element = map.svg.selectAll(".datamaps-subunit."+geography.id);
+
+            element[0][0]['style']['stroke'] = '#000040';
+            element[0][0]['style']['stroke-width'] = '0.5';
         } else if (selected.length > 2) {
             alert('You can only select up to three countries, please deselect ' + selected.join(' or '))
         } else if (selected.includes(geography.id) == false) {
             selected.push(geography.id);
+            var element = map.svg.selectAll(".datamaps-subunit."+geography.id);
+
+            element[0][0]['style']['stroke'] = 'yellow';
+            element[0][0]['style']['stroke-width'] = '2.5';
         }
     } else {
         alert("Sorry, no data exists for " + geography.id)

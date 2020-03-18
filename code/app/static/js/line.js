@@ -20,8 +20,8 @@ function makeLineGraph(selected, checked) {
 
     deleteLineGraph();
 
-    var timespan = document.querySelector('#value-range').innerHTML;
-    timespan = timespan.split('-');
+    var timespan = document.querySelector('#range-label').innerHTML;
+    timespan = timespan.split(' - ');
     timespan[0] = Number(timespan[0]);
     timespan[1] = Number(timespan[1]);
 
@@ -29,32 +29,33 @@ function makeLineGraph(selected, checked) {
         .domain([timespan[0], timespan[1]])
         .range([timespan[0], timespan[1]]);
 
-    obj_of_times = {}
+    var obj_of_times = {};
+
     for (var i = timespan[0]; i < timespan[1]; i++) {
-        obj_of_times[i] = 0
+        obj_of_times[i] = 0;
     }
 
-    country_obj = {}
+    var country_obj = {};
     for (var i = 0; i < selected.length; i++) {
-        country_obj[selected[i]] = [obj_of_times];
+        country_obj[selected[i]] = [Object.assign({}, obj_of_times)];
     }
 
     for (var i = 0; i < data.length; i++) {
         if (data[i]['creation_year'] > timespan[0] && data[i]['creation_year'] < timespan[1]
             && selected.includes(data[i]['ctry_id'])
             && data[i]['color_name'] == checked[0]) {
-            country_obj[data[i]['ctry_id']][0][data[i]['creation_year']]++;
+                console.log(country_obj[data[i]['ctry_id']]);
+                country_obj[data[i]['ctry_id']][0][data[i]['creation_year']]++;
         }
     }
 
-    dataa = []
+    var dataa = []
     var years = Object.keys(obj_of_times);
     for (var i = 0; i < selected.length; i++) {
         var values = Object.keys(country_obj[selected[i]][0]).map(function(key){
             return country_obj[selected[i]][0][key];
         });
         dataa.push({label: selected[i], x: years, y: values});
-
     }
 
     var xy_chart = d3_xy_chart()
@@ -183,8 +184,8 @@ function makeLineGraph(selected, checked) {
                 data_lines.append("path")
                     .attr("class", "line")
                     .attr("d", function(d) {return draw_line(d); })
-                    .attr("stroke", "white");
-                    // .attr("stroke", function(_, i) {return color_scale(i);});
+                    .attr("stroke", "white")
+                    .attr("stroke", function(_, i) {return color_scale(i);});
 
                 data_lines.append("text")
                     .datum(function(d, i) { return {name: datasets[i].label, final: d[d.length-1]}; })
@@ -193,8 +194,8 @@ function makeLineGraph(selected, checked) {
                                  y_scale(d.final[1]) + ")" ) ; })
                     .attr("x", 3)
                     .attr("dy", ".35em")
-                    .attr("fill", "white" )
-                    // .attr("fill", function(_, i) { return color_scale(i); })
+                    // .attr("fill", "white" )
+                    .attr("fill", function(_, i) { return color_scale(i); })
                     .text(function(d) { return d.name; }) ;
 
             }) ;

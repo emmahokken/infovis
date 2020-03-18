@@ -1,7 +1,7 @@
 d3v5 = d3
 window.d3 = null
 
-var w = 300, h = 50;
+var w = 305, h = 50;
 
 var key = d3v5
   .select("#legend")
@@ -22,8 +22,8 @@ var legend = key.append("defs")
 function makeLegend() {
 
 
-    var timespan = document.querySelector('#value-range').innerHTML;
-    timespan = timespan.split('-');
+    var timespan = document.querySelector('#range-label').innerHTML;
+    timespan = timespan.split(' - ');
     timespan[0] = Number(timespan[0]);
     timespan[1] = Number(timespan[1]);
 

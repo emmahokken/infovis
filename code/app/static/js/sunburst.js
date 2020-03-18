@@ -21,8 +21,8 @@ function getData() {
                             {"name": 'white', "children": []},
                         ]
                     }
-    var timespan = document.querySelector('#value-range').innerHTML;
-    timespan = timespan.split('-');
+    var timespan = document.querySelector('#range-label').innerHTML;
+    timespan = timespan.split(' - ');
     timespan[0] = Number(timespan[0]);
     timespan[1] = Number(timespan[1]);
 
@@ -145,13 +145,11 @@ function makeSunburst() {
 
     function clicked(p) {
 
-        console.log("hello????????");
       parent.datum(p.parent || root);
       // check invisible checkbox if color is clicked
       if (p.data.name != 'flare') {
           var boxie = document.getElementById(p.data.name);
           boxie.checked = true;
-          console.log('?efa?')
       } else {
           var boxie = document.getElementById('none');
           boxie.checked = true;
