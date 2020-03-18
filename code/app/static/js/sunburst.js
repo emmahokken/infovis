@@ -154,7 +154,6 @@ function makeSunburst() {
       if (p.data.name != 'flare') {
           var boxie = document.getElementById(p.data.name);
           boxie.checked = true;
-          console.log('?efa?')
       } else {
           var boxie = document.getElementById('none');
           boxie.checked = true;
