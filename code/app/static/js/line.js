@@ -1,25 +1,20 @@
 d3v3 = d3;
 window.d3 = null;
 
-// var dataa = [ { label: "France",
-//                x: [1900, 1901, 1902, 1903, 1904],
-//                y: [0, 1, 2, 3, 4] },
-//              { label: "Spain",
-//                x: [1900, 1901, 1902, 1903, 1904],
-//                y: [0, 1, 4, 9, 16] },
-//              { label: "Italy",
-//                x: [1900, 1901, 1902, 1903, 1904],
-//                y: [40, 30, 32, 20, 8] },
-//            ];
-
 function deleteLineGraph() {
     d3v3.select(".lineline").remove();
 }
 
-function makeLineGraph(selected, checked) {
+var purple = ["#f2f0f7","#cbc9e2","#9e9ac8","#6a51a3"];
+var blue = ["#eff3ff","#bdd7e7","#6baed6","#2171b5"];
+var green = ["#edf8e9","#bae4b3","#74c476","#238b45"];
+var red = ["#fee5d9","#fcae91","#fb6a4a","#cb181d"];
+var gray = ["#f7f7f7","#cccccc","#969696","#525252"];
+var brown = ['#892201', '#d5b07c', '#c69874', '#bc6a3c'];
+var white = ['#fffff2', '#f9f9f9', '#fffff4', '#fbf7f5'];
+var yellow = ['#ffdf57', '#fff48c', '#feffaa', '#ffffc5'];
 
-    deleteLineGraph();
-
+function get_data(selected, checked) {
     var timespan = document.querySelector('#range-label').innerHTML;
     timespan = timespan.split(' - ');
     timespan[0] = Number(timespan[0]);
@@ -40,7 +35,11 @@ function makeLineGraph(selected, checked) {
         country_obj[selected[i]] = [Object.assign({}, obj_of_times)];
     }
 
+    // loop over whole colections
     for (var i = 0; i < data.length; i++) {
+        // if the year of the painting is in the domain for the slider, and if
+        // the country of the painting is one of the selected countries (ITA or FRA)
+        // then do +1 for that country/year in the object country_obj
         if (data[i]['creation_year'] > timespan[0] && data[i]['creation_year'] < timespan[1]
             && selected.includes(data[i]['ctry_id'])
             && data[i]['color_name'] == checked[0]) {
@@ -57,12 +56,22 @@ function makeLineGraph(selected, checked) {
         });
         dataa.push({label: selected[i], x: years, y: values});
     }
+    return(dataa)
+}
+
+
+
+function makeLineGraph(selected, checked) {
+
+    deleteLineGraph();
+
+
+    var dataa = get_data(selected, checked)
+
 
     var xy_chart = d3_xy_chart()
         .width(960)
-        .height(500);
-
-
+        .height(400);
 
     var svg = d3v3.select(".line_container").append("svg")
         .datum(dataa)
@@ -70,14 +79,15 @@ function makeLineGraph(selected, checked) {
         .attr('class', 'lineline');
 
     function d3_xy_chart() {
-        var width = 740,
-            height = 750;
+        var width = 640,
+            height = 480,
+            xlabel = "X Axis Label",
+            ylabel = "Y Axis Label" ;
 
         function chart(selection) {
             selection.each(function(datasets) {
 
-                // Create the plot.
-                var margin = {top: 20, right: 80, bottom: 30, left: 50},
+                var margin = {top: 40, right: 80, bottom: 40, left: 40},
                     innerwidth = width - margin.left - margin.right,
                     innerheight = height - margin.top - margin.bottom ;
 
@@ -96,18 +106,17 @@ function makeLineGraph(selected, checked) {
 
                 var x_axis = d3v3.svg.axis()
                     .scale(x_scale)
-                    .orient("bottom")
-                    .tickFormat(d3v3.format("d"));
+                    .orient("bottom") ;
 
                 var y_axis = d3v3.svg.axis()
                     .scale(y_scale)
-                    .orient("left");
+                    .orient("left") ;
 
                 var x_grid = d3v3.svg.axis()
                     .scale(x_scale)
                     .orient("bottom")
                     .tickSize(-innerheight)
-                    .tickFormat("");
+                    .tickFormat("") ;
 
                 var y_grid = d3v3.svg.axis()
                     .scale(y_scale)
@@ -129,58 +138,38 @@ function makeLineGraph(selected, checked) {
                 svg.append("g")
                     .attr("class", "x grid")
                     .attr("transform", "translate(0," + innerheight + ")")
-                    .call(x_grid);
+                    .call(x_grid) ;
 
                 svg.append("g")
                     .attr("class", "y grid")
-                    .call(y_grid);
+                    .call(y_grid) ;
 
                 svg.append("g")
                     .attr("class", "x axis")
                     .attr("transform", "translate(0," + innerheight + ")")
                     .call(x_axis)
                     .append("text")
-                    .attr("dy", "-.71em")
-                    .attr("x", innerwidth)
-                    .style("text-anchor", "end")
+                    .attr("y", margin.top)
+                    .attr("x", innerwidth/2)
+                    .style("text-anchor", "middle")
+                    .text(xlabel) ;
 
                 svg.append("g")
                     .attr("class", "y axis")
                     .call(y_axis)
                     .append("text")
                     .attr("transform", "rotate(-90)")
-                    .attr("y", 6)
-                    .attr("dy", "0.71em")
-                    .style("text-anchor", "end");
-
-                // axis label
-                svg.append("text")
-                    .attr("class", "x label")
-                    .attr("text-anchor", "end")
-                    .attr("x", 500)
-                    .attr("y", 480)
-                    .attr("fill", "white" )
-                    .text("Years");
-
-                // y axis label
-                svg.append("text")
-                    .attr("class", "y label")
-                    .attr("text-anchor", "end")
-                    .attr("x", -150)
-                    .attr("y", -45)
-                    .attr("dy", ".75em")
-                    .attr("transform", "rotate(-90)")
-                    .attr("fill", "white" )
-                    .text("Amount of paintings");
-
-
+                    .attr("y", -margin.left)
+                    .attr("x", -(height / 2))
+                    .attr("dy", "1em")
+                    .style("text-anchor", "middle")
+                    .text(ylabel) ;
 
                 var data_lines = svg.selectAll(".d3_xy_chart_line")
                     .data(datasets.map(function(d) {return d3v3.zip(d.x, d.y);}))
                     .enter().append("g")
                     .attr("class", "d3_xy_chart_line") ;
 
-                // draw lines
                 data_lines.append("path")
                     .attr("class", "line")
                     .attr("d", function(d) {return draw_line(d); })
@@ -213,17 +202,17 @@ function makeLineGraph(selected, checked) {
             return chart;
         };
 
-    // <!--    chart.xlabel = function(value) {-->
-    // <!--        if(!arguments.length) return xlabel ;-->
-    // <!--        xlabel = value ;-->
-    // <!--        return chart ;-->
-    // <!--    } ;-->
-    //
-    // <!--    chart.ylabel = function(value) {-->
-    // <!--        if(!arguments.length) return ylabel ;-->
-    // <!--        ylabel = value ;-->
-    // <!--        return chart ;-->
-    // <!--    } ;-->
+        chart.xlabel = function(value) {
+            if(!arguments.length) return xlabel ;
+            xlabel = value ;
+            return chart ;
+        } ;
+
+        chart.ylabel = function(value) {
+            if(!arguments.length) return ylabel ;
+            ylabel = value ;
+            return chart ;
+        } ;
 
         return chart;
     }

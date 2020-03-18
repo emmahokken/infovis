@@ -73,7 +73,7 @@ function makeLegend() {
 
     var paletteScale = d3v5.scaleLinear()
         .domain([minValue, maxValue])
-        .range(["#ffecec", "#780000"]);
+        .range(["black", checked[0]]);
 
 
     legend.selectAll('stop').remove()

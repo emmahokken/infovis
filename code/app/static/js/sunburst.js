@@ -98,17 +98,20 @@ function makeSunburst() {
         .attr("transform", `translate(${width / 2},${width / 2})`);
 
 
+
+
     const path = g.append("g")
       .selectAll("path")
       .data(root.descendants().slice(1))
       .join("path")
         .attr("fill", d => { while (d.depth > 1) d = d.parent; return d.data.name; })
         .attr("fill", d => { while (d.depth > 2) d = d.parent; return d.data.name; })
-        .attr("d", d => arc(d.current));
+        .attr("d", d => arc(d.current))
 
     path.filter(d => d.children)
         .style("cursor", "pointer")
         .on("click", clicked)
+
 
     path.append("title")
         .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${format(d.value)}`);
@@ -141,6 +144,8 @@ function makeSunburst() {
         y1: Math.max(0, d.y1 - p.depth)
 
     */
+    //label.style("opacity", .9);
+        //d3.select("#tip").text(d.name).style("opacity", 0.9);
 
 
     function clicked(p) {
