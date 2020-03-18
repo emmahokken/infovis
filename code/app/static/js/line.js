@@ -16,10 +16,7 @@ var yellow = ['#ffdf57', '#fff48c', '#feffaa', '#ffffc5'];
 
 
 
-function makeLineGraph(selected, checked) {
-
-    deleteLineGraph();
-
+function get_data(selected, checked) {
     var timespan = document.querySelector('#value-range').innerHTML;
     timespan = timespan.split('-');
     timespan[0] = Number(timespan[0]);
@@ -34,18 +31,35 @@ function makeLineGraph(selected, checked) {
         obj_of_times[i] = 0
     }
 
+
     country_obj = {}
     for (var i = 0; i < selected.length; i++) {
         country_obj[selected[i]] = [obj_of_times];
     }
 
+
+
+
+    // loop over whole colections
     for (var i = 0; i < data.length; i++) {
+        // if the year of the painting is in the domain for the slider, and if
+        // the country of the painting is one of the selected countries (ITA or FRA)
+        // then do +1 for that country/year in the object country_obj
         if (data[i]['creation_year'] > timespan[0] && data[i]['creation_year'] < timespan[1]
             && selected.includes(data[i]['ctry_id'])
             && data[i]['color_name'] == checked[0]) {
-            country_obj[data[i]['ctry_id']][0][data[i]['creation_year']]++;
+
+            country = data[i]['ctry_id'] // prints: ITA or FRA
+            year = data[i]['creation_year'] // prints: a year...
+            country_obj[country][0][year]++; // so basically increment the value for key 'year' for either ITA or FR
+
         }
     }
+
+    console.log(country_obj)
+
+
+
 
     dataa = []
 
@@ -58,20 +72,28 @@ function makeLineGraph(selected, checked) {
         dataa.push({label: selected[i], x: years, y: values});
 
     }
+    return(dataa)
+}
+
+
+
+function makeLineGraph(selected, checked) {
+
+    deleteLineGraph();
+
+
+    var dataa = get_data(selected, checked)
+
 
     var xy_chart = d3_xy_chart()
         .width(960)
-        .height(500);
-
-
+        .height(400);
 
     var svg = d3v3.select(".line_container").append("svg")
         .datum(dataa)
         .call(xy_chart)
         .attr('class', 'lineline');
 
-
-    console.log(dataa)
     function d3_xy_chart() {
         var width = 640,
             height = 480,
