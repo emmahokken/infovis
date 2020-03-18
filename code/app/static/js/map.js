@@ -14,7 +14,7 @@ function getClickedColors() {
             }
         }
     }
-
+    //console.log(checked)
     return checked;
 }
 
@@ -73,13 +73,14 @@ function updateColors() {
     var minValue = Math.min.apply(null, only_values),
         maxValue = Math.max.apply(null, only_values);
 
-    console.log(minValue)
-    console.log(maxValue)
+    //console.log(minValue)
+    //console.log(maxValue)
 
     // create color palette function
     var paletteScale = d3v3.scale.linear()
         .domain([minValue, maxValue])
-        .range(["#ffecec", "#780000"]);
+        .range(["black", checked[0]]);
+    //console.log(checked)
 
     for (let i = 0; i < Object.keys(freq_obj).length; i++) {
         colour_obj[Object.keys(freq_obj)[i]] = paletteScale(freq_obj[Object.keys(freq_obj)[i]])
@@ -128,14 +129,20 @@ var map = new Datamap({
     height: 650,
     fills: {
         defaultFill: '#000000',
-        blue: 'yellow', // toy fill colours
-        Spain: 'green'
+        //blue: 'yellow', // toy fill colours
+        //Spain: 'green'
     },
+
     geographyConfig: {
+
+                //highlightOnHover: true, // disable when wanting to change colour on click
+                borderColor: '#595959', // same as background
+                borderWidth: 0.5,
                 popupOnHover: true, // so you see the country names
-                highlightOnHover: false, // disable when wanting to change colour on click
-                borderColor: '#000040', // same as background
-                borderWidth: 0.5
+                highlightFillColor: 'yellow',
+                highlightBorderColor: 'yellow',
+                highlightFillOpacity: 0.2,
+                highlightBorderWidth: 0.5
     }
 });
 
