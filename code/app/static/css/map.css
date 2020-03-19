@@ -1,5 +1,6 @@
 body {
-    background-color: #00001a;
+    /* background-color: #00001a; */
+    background-color: #000040;
     width: 100%;
 }
 
@@ -15,9 +16,11 @@ h1, h2, h3, p, label {
 
 #map-container {
     /* background-color: yellow; */
+    margin-top: -100px;
 }
 
 .sunburst_container {
     /* padding-left: 8  0px; */
     /* background-color: purple; */
+    margin-top: -100px;
 }

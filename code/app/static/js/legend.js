@@ -71,9 +71,13 @@ function makeLegend() {
         .scale(y)
         .ticks(5);
 
+    if (checked.length == 0) {
+        checked.push('deeppink')
+    }
+
     var paletteScale = d3v5.scaleLinear()
         .domain([minValue, maxValue])
-        .range(["black", checked[0]]);
+        .range(["#121212", checked[0]]);
 
 
     legend.selectAll('stop').remove()

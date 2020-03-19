@@ -30,9 +30,16 @@
 	<div class="row align-items-center">
 		<div class="col-sm-2">
 			<div class="section">
+				<div id ="world_dist"></div>
 				<div id="container"></div>
 				<div id="range-label"></div>
    			 </div>
+		</div>
+		<div class="col">
+			<div class="line_container">
+				<h4 id="line_title"></h4>
+				<svg class="line"></svg>
+			</div>
 		</div>
 	</div>
 	<div class="row align-items-center">
@@ -133,7 +140,10 @@
 <link rel="stylesheet" type="text/css" href="../static/css/play_slider.css">
 <script type="text/javascript" src="../static/js/play_slider.js"></script>
 
-
+<!--world distribution aka the plot above the slider-->
+<script src="https://d3js.org/d3.v4.js"></script>
+<link rel="stylesheet" type="text/css" href="../static/css/world_distribution.css">
+<script type="text/javascript" src="../static/js/world_distribution.js"></script>
 
 
 <!-- <script>

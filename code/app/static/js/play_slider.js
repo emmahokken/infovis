@@ -20,8 +20,6 @@
  * @returns {{range: function(number, number), onChange: function(function)}}
  */
 
-console.log("FISSAAHH")
-console.log(d3)
 function create_slider (rangeMin, rangeMax, containerSelector, playButton) {
     "use strict";
 

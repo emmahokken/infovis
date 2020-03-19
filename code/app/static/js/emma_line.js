@@ -5,8 +5,16 @@ function deleteLineGraph() {
     d3v3.select(".lineline").remove();
 }
 
-function get_data(selected, checked) {
+var purple = ["#f2f0f7","#cbc9e2","#9e9ac8","#6a51a3"];
+var blue = ["#eff3ff","#bdd7e7","#6baed6","#2171b5"];
+var green = ["#edf8e9","#bae4b3","#74c476","#238b45"];
+var red = ["#fee5d9","#fcae91","#fb6a4a","#cb181d"];
+var gray = ["#f7f7f7","#cccccc","#969696","#525252"];
+var brown = ['#892201', '#d5b07c', '#c69874', '#bc6a3c'];
+var white = ['#fffff2', '#f9f9f9', '#fffff4', '#fbf7f5'];
+var yellow = ['#ffdf57', '#fff48c', '#feffaa', '#ffffc5'];
 
+function get_data(selected, checked) {
     var timespan = document.querySelector('#range-label').innerHTML;
     timespan = timespan.split(' - ');
     timespan[0] = Number(timespan[0]);
@@ -16,9 +24,10 @@ function get_data(selected, checked) {
         .domain([timespan[0], timespan[1]])
         .range([timespan[0], timespan[1]]);
 
-    var obj_of_times = {}
+    var obj_of_times = {};
+
     for (var i = timespan[0]; i < timespan[1]; i++) {
-        obj_of_times[i] = 0
+        obj_of_times[i] = 0;
     }
 
     var country_obj = {};
@@ -33,53 +42,52 @@ function get_data(selected, checked) {
         // then do +1 for that country/year in the object country_obj
         if (data[i]['creation_year'] > timespan[0] && data[i]['creation_year'] < timespan[1]
             && selected.includes(data[i]['ctry_id'])
-            && data[i]['color_name'] == checked) {
-
-            country = data[i]['ctry_id'] // prints: ITA or FRA
-            year = data[i]['creation_year'] // prints: a year...
-            country_obj[country][0][year] += 1; // so basically increment the value for key 'year' for either ITA or FR
+            && data[i]['color_name'] == checked[0]) {
+                console.log(country_obj[data[i]['ctry_id']]);
+                country_obj[data[i]['ctry_id']][0][data[i]['creation_year']]++;
         }
     }
 
-    var data_processed = []
-
-
+    var dataa = []
     var years = Object.keys(obj_of_times);
     for (var i = 0; i < selected.length; i++) {
         var values = Object.keys(country_obj[selected[i]][0]).map(function(key){
             return country_obj[selected[i]][0][key];
         });
-        data_processed.push({label: selected[i], x: years, y: values});
-
+        dataa.push({label: selected[i], x: years, y: values});
     }
-    return(data_processed)
+    return(dataa)
 }
 
 
+
 function makeLineGraph(selected, checked) {
+
     deleteLineGraph();
 
-    var data_processed = get_data(selected, checked)
+
+    var dataa = get_data(selected, checked)
+
 
     var xy_chart = d3_xy_chart()
-        .width(800)
+        .width(960)
         .height(400);
 
     var svg = d3v3.select(".line_container").append("svg")
-        .datum(data_processed)
+        .datum(dataa)
         .call(xy_chart)
         .attr('class', 'lineline');
 
     function d3_xy_chart() {
-        var width = 1000,
-            height = 1000,
-            xlabel = "Year",
-            ylabel = "Number of artworks" ;
+        var width = 640,
+            height = 480,
+            xlabel = "Years",
+            ylabel = "Amount of paintings" ;
 
         function chart(selection) {
             selection.each(function(datasets) {
 
-                var margin = {top: 40, right: 40, bottom: 45, left: 50},
+                var margin = {top: 40, right: 80, bottom: 40, left: 40},
                     innerwidth = width - margin.left - margin.right,
                     innerheight = height - margin.top - margin.bottom ;
 
@@ -93,13 +101,12 @@ function makeLineGraph(selected, checked) {
                     .domain([ d3v3.min(datasets, function(d) { return d3v3.min(d.y); }),
                               d3v3.max(datasets, function(d) { return d3v3.max(d.y); }) ]) ;
 
-                var color_scale = d3v3.scale.linear()
-                        .domain([0, selected.length])
-                        .range(["white", checked]);
+                var color_scale = d3v3.scale.category10()
+                    .domain(d3v3.range(datasets.length)) ;
 
                 var x_axis = d3v3.svg.axis()
                     .scale(x_scale)
-                    .orient("bottom");
+                    .orient("bottom") ;
 
                 var y_axis = d3v3.svg.axis()
                     .scale(y_scale)
@@ -109,7 +116,7 @@ function makeLineGraph(selected, checked) {
                     .scale(x_scale)
                     .orient("bottom")
                     .tickSize(-innerheight)
-                    .tickFormat("");
+                    .tickFormat("") ;
 
                 var y_grid = d3v3.svg.axis()
                     .scale(y_scale)
@@ -125,19 +132,16 @@ function makeLineGraph(selected, checked) {
                 var svg = d3v3.select(this)
                     .attr("width", width)
                     .attr("height", height)
-                    .style("font-size", "14px")
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")") ;
 
                 svg.append("g")
                     .attr("class", "x grid")
-                    .style("font-size", "14px")
                     .attr("transform", "translate(0," + innerheight + ")")
                     .call(x_grid) ;
 
                 svg.append("g")
                     .attr("class", "y grid")
-                    .style("font-size", "14px")
                     .call(y_grid) ;
 
                 svg.append("g")
@@ -148,8 +152,7 @@ function makeLineGraph(selected, checked) {
                     .attr("y", margin.top)
                     .attr("x", innerwidth/2)
                     .style("text-anchor", "middle")
-                    .style("font-size", "14px")
-                    .text(xlabel);
+                    .text(xlabel) ;
 
                 svg.append("g")
                     .attr("class", "y axis")
@@ -157,26 +160,10 @@ function makeLineGraph(selected, checked) {
                     .append("text")
                     .attr("transform", "rotate(-90)")
                     .attr("y", -margin.left)
-                    .attr("x", -(innerheight / 2))
+                    .attr("x", -(height / 2))
                     .attr("dy", "1em")
                     .style("text-anchor", "middle")
-                    .style("font-size", "14px")
                     .text(ylabel) ;
-
-
-                svg.append("text")
-                    .attr("x", innerwidth/2)
-                    .attr("y", -(margin.top / 2))
-                    .attr("text-anchor", "middle")
-                    .style("font-size", "14px")
-                    .style('fill', 'white');
-                    // .text(document.getElementById("line_title").innerHTML = titl);
-
-                    // BELOW IS NOT WORKING, DON'T KNOW WHY...???
-                    // .text("Paintings with the color " + checked[0] + " for ")
-                    // .datum(function(d, i) { return {name: datasets[i].label, final: d[d.length-1]}; })
-                    // .attr("fill", function(_, i) { return color_scale(i); })
-                    // .text(function(d) { return d.name; }) ;
 
                 var data_lines = svg.selectAll(".d3_xy_chart_line")
                     .data(datasets.map(function(d) {return d3v3.zip(d.x, d.y);}))
@@ -186,19 +173,19 @@ function makeLineGraph(selected, checked) {
                 data_lines.append("path")
                     .attr("class", "line")
                     .attr("d", function(d) {return draw_line(d); })
+                    .attr("stroke", "white")
+                    .attr("stroke", function(_, i) {return color_scale(i);});
 
-                    .attr("stroke", function(_, i) {return color_scale(i);})
-                    .attr("stroke-width", 0.1);  // Does not work...?
-
-                // data_lines.append("text")
-                //     .datum(function(d, i) { return {name: datasets[i].label, final: d[d.length-1]}; })
-                //     .attr("transform", function(d) {
-                //         return ( "translate(" + x_scale(d.final[0]) + "," +
-                //                  y_scale(d.final[1]) + ")" ) ; })
-                //     .attr("x", 3)
-                //     .attr("dy", ".35em")
-                //     .attr("fill", function(_, i) { return color_scale(i); })
-                //     .text(function(d) { return d.name; }) ;
+                data_lines.append("text")
+                    .datum(function(d, i) { return {name: datasets[i].label, final: d[d.length-1]}; })
+                    .attr("transform", function(d) {
+                        return ( "translate(" + x_scale(d.final[0]) + "," +
+                                 y_scale(d.final[1]) + ")" ) ; })
+                    .attr("x", 3)
+                    .attr("dy", ".35em")
+                    // .attr("fill", "white" )
+                    .attr("fill", function(_, i) { return color_scale(i); })
+                    .text(function(d) { return d.name; }) ;
 
             }) ;
         }

@@ -25,4 +25,12 @@
 .line {
   fill: none;
   stroke-width: 2.5px;
+  margin-left: 100px
+}
+
+#line_title {
+    /* margin-top: 4px; */
+    margin-left: 550px;
+    margin-bottom: -20px;
+    color: white;
 }

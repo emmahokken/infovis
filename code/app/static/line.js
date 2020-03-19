@@ -7,8 +7,8 @@ function deleteLineGraph() {
 
 function get_data(selected, checked) {
 
-    var timespan = document.querySelector('#range-label').innerHTML;
-    timespan = timespan.split(' - ');
+    var timespan = document.querySelector('#value-range').innerHTML;
+    timespan = timespan.split('-');
     timespan[0] = Number(timespan[0]);
     timespan[1] = Number(timespan[1]);
 
@@ -16,15 +16,16 @@ function get_data(selected, checked) {
         .domain([timespan[0], timespan[1]])
         .range([timespan[0], timespan[1]]);
 
-    var obj_of_times = {}
+    obj_of_times = {}
     for (var i = timespan[0]; i < timespan[1]; i++) {
         obj_of_times[i] = 0
     }
 
+
     var country_obj = {};
-    for (var i = 0; i < selected.length; i++) {
-        country_obj[selected[i]] = [Object.assign({}, obj_of_times)];
-    }
+     for (var i = 0; i < selected.length; i++) {
+         country_obj[selected[i]] = [Object.assign({}, obj_of_times)];
+     }
 
     // loop over whole colections
     for (var i = 0; i < data.length; i++) {
@@ -33,15 +34,16 @@ function get_data(selected, checked) {
         // then do +1 for that country/year in the object country_obj
         if (data[i]['creation_year'] > timespan[0] && data[i]['creation_year'] < timespan[1]
             && selected.includes(data[i]['ctry_id'])
-            && data[i]['color_name'] == checked) {
+            && data[i]['color_name'] == checked[0]) {
 
             country = data[i]['ctry_id'] // prints: ITA or FRA
             year = data[i]['creation_year'] // prints: a year...
             country_obj[country][0][year] += 1; // so basically increment the value for key 'year' for either ITA or FR
+
         }
     }
 
-    var data_processed = []
+    data_processed = []
 
 
     var years = Object.keys(obj_of_times);
@@ -56,14 +58,18 @@ function get_data(selected, checked) {
 }
 
 
+
+
+
+
 function makeLineGraph(selected, checked) {
     deleteLineGraph();
 
     var data_processed = get_data(selected, checked)
 
     var xy_chart = d3_xy_chart()
-        .width(800)
-        .height(400);
+        .width(1000)
+        .height(200);
 
     var svg = d3v3.select(".line_container").append("svg")
         .datum(data_processed)
@@ -72,9 +78,9 @@ function makeLineGraph(selected, checked) {
 
     function d3_xy_chart() {
         var width = 1000,
-            height = 1000,
-            xlabel = "Year",
-            ylabel = "Number of artworks" ;
+            height = 200,
+            xlabel = "year",
+            ylabel = "art count" ;
 
         function chart(selection) {
             selection.each(function(datasets) {
@@ -94,12 +100,12 @@ function makeLineGraph(selected, checked) {
                               d3v3.max(datasets, function(d) { return d3v3.max(d.y); }) ]) ;
 
                 var color_scale = d3v3.scale.linear()
-                        .domain([0, selected.length])
-                        .range(["white", checked]);
+                        .domain([0,3])
+                        .range(["white", checked[0]]);
 
                 var x_axis = d3v3.svg.axis()
                     .scale(x_scale)
-                    .orient("bottom");
+                    .orient("bottom") ;
 
                 var y_axis = d3v3.svg.axis()
                     .scale(y_scale)
@@ -109,7 +115,7 @@ function makeLineGraph(selected, checked) {
                     .scale(x_scale)
                     .orient("bottom")
                     .tickSize(-innerheight)
-                    .tickFormat("");
+                    .tickFormat("") ;
 
                 var y_grid = d3v3.svg.axis()
                     .scale(y_scale)
@@ -149,7 +155,7 @@ function makeLineGraph(selected, checked) {
                     .attr("x", innerwidth/2)
                     .style("text-anchor", "middle")
                     .style("font-size", "14px")
-                    .text(xlabel);
+                    .text(xlabel) ;
 
                 svg.append("g")
                     .attr("class", "y axis")
@@ -163,14 +169,13 @@ function makeLineGraph(selected, checked) {
                     .style("font-size", "14px")
                     .text(ylabel) ;
 
-
                 svg.append("text")
                     .attr("x", innerwidth/2)
                     .attr("y", -(margin.top / 2))
                     .attr("text-anchor", "middle")
                     .style("font-size", "14px")
-                    .style('fill', 'white');
-                    // .text(document.getElementById("line_title").innerHTML = titl);
+                    .style('fill', 'white')
+                    .text(document.getElementById("line_title").innerHTML = "Paintings with the color " + checked[0] + " for " + selected.join(' and '));
 
                     // BELOW IS NOT WORKING, DON'T KNOW WHY...???
                     // .text("Paintings with the color " + checked[0] + " for ")
@@ -183,6 +188,7 @@ function makeLineGraph(selected, checked) {
                     .enter().append("g")
                     .attr("class", "d3_xy_chart_line") ;
 
+                console.log("hello world")
                 data_lines.append("path")
                     .attr("class", "line")
                     .attr("d", function(d) {return draw_line(d); })

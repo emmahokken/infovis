@@ -1,5 +1,8 @@
 d3v3 = d3
 window.d3 = null
+
+var save_checked_col;
+
 function getClickedColors() {
     var checked = [];
 
@@ -36,12 +39,20 @@ function updateColors() {
     timespan = timespan.split(' - ');
     timespan[0] = Number(timespan[0]);
     timespan[1] = Number(timespan[1]);
-    console.log(timespan[0])
+
     // get colours https://github.com/markmarkoh/datamaps/blob/master/src/examples/highmaps_world.html
     var freq_obj = {},
         colour_obj = {},
         only_values = [],
         checked = getClickedColors();
+
+    console.log(checked);
+    save_checked_col = checked[0];
+    if (checked.length == 0) {
+        save_checked_col = 'deeppink';
+    }
+
+
 
     // reset frequencies
     for (let i = 0; i < data.length; i++) {
@@ -73,14 +84,14 @@ function updateColors() {
     var minValue = Math.min.apply(null, only_values),
         maxValue = Math.max.apply(null, only_values);
 
-    //console.log(minValue)
-    //console.log(maxValue)
+    console.log(minValue)
+    console.log(maxValue)
 
     // create color palette function
     var paletteScale = d3v3.scale.linear()
         .domain([minValue, maxValue])
-        .range(["black", checked[0]]);
-    //console.log(checked)
+        .range(["#141414", save_checked_col]);
+
 
     for (let i = 0; i < Object.keys(freq_obj).length; i++) {
         colour_obj[Object.keys(freq_obj)[i]] = paletteScale(freq_obj[Object.keys(freq_obj)[i]])
@@ -88,21 +99,7 @@ function updateColors() {
 
     map.updateChoropleth(colour_obj);
     makeLegend();
-    // makeSunburst();
-    if (checked.length == 0 && selected.length > 0) {
-        document.getElementById("line_title").innerHTML = "You've selected " + selected.join(' and ') + ", now select a color.";
-
-        makeLineGraph(selected, checked);
-    } else if (selected.length > 0) {
-        // update plot title
-        document.getElementById("line_title").innerHTML = "Paintings with the color " + checked.join() + " for " + selected.join(' and ');
-
-        makeLineGraph(selected, checked);
-    } else {
-        document.getElementById("line_title").innerHTML = "";
-
-        deleteLineGraph();
-    }
+    goLine();
 
     uncheckColors();
 }
@@ -134,15 +131,10 @@ var map = new Datamap({
     },
 
     geographyConfig: {
-
-                //highlightOnHover: true, // disable when wanting to change colour on click
+                highlightOnHover: false, // disable when wanting to change colour on click
                 borderColor: '#595959', // same as background
                 borderWidth: 0.5,
                 popupOnHover: true, // so you see the country names
-                highlightFillColor: 'yellow',
-                highlightBorderColor: 'yellow',
-                highlightFillOpacity: 0.2,
-                highlightBorderWidth: 0.5
     }
 });
 
@@ -175,6 +167,8 @@ function reset(){
 var selected = [];
 // set onclick reaction for map
 map.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
+
+    console.log('we have clicked:', save_checked_col);
     if (countries.includes(geography.id)) {
         if (selected.includes(geography.id)) {
             var ind = selected.indexOf(geography.id);
@@ -196,9 +190,9 @@ map.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
         alert("Sorry, no data exists for " + geography.id)
     }
 
-    updateColors()
-    makeSunburst()
-
+    // updateColors()
+    // makeSunburst()
+    goLine();
     if (geography.properties.name == "Australia") {
         gotoAustralia();
         obje[geography.id] = 'purple';
@@ -209,6 +203,40 @@ map.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
 
 
 })
+
+function goLine() {
+    if (save_checked_col == 'deeppink' && selected.length > 0) {
+        document.getElementById("line_title").innerHTML = "You've selected " + selected.join(' and ') + ", now select a color.";
+
+        makeLineGraph(selected, save_checked_col);
+    } else if (selected.length > 0) {
+        // update plot title
+
+        var color_scale = d3v3.scale.linear()
+                .domain([0, selected.length])
+                .range(["white", save_checked_col]);
+
+        var spans = [];
+        var titl = "Paintings with the color " + save_checked_col + " for ";
+        for (var i = 0; i < selected.length; i++) {
+            var colu = color_scale(i);
+            var span = "<span style='color: " + colu + ";'>" + selected[i] + "</span>";
+            spans.push(span)
+        }
+
+        titl += spans.join(" and ");
+        document.getElementById("line_title").innerHTML = titl;
+
+        // document.getElementById("line_title").innerHTML = "Paintings with the color " + save_checked_col + " for " + selected.join(' and ');
+
+        makeLineGraph(selected, save_checked_col);
+    } else {
+        document.getElementById("line_title").innerHTML = "Please select a color and a country!";
+
+        deleteLineGraph();
+    }
+
+}
 
 // update map colors once content is loaded
 window.addEventListener('DOMContentLoaded', (event) => {
