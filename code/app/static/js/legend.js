@@ -79,6 +79,11 @@ function makeLegend() {
         .domain([minValue, maxValue])
         .range(["#121212", checked[0]]);
 
+    if (checked[0] == 'deeppink') {
+        paletteScale = d3v3.scale.linear()
+            .domain([minValue, maxValue])
+            .range(["green", "red"]);
+    }
 
     legend.selectAll('stop').remove()
     key.select('rect').remove()

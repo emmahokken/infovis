@@ -17,6 +17,7 @@ var svg = d3.select("#world_dist")
 plot_lines = function(data) {
 
     var x = d3.scaleLinear()
+        // .domain([new Date(1400,2,13), new Date(2020, 2, 13)])
       .domain(d3.extent(data, function(d) { return d.date; }))
       .range([ 0, width ])
 
@@ -26,7 +27,8 @@ plot_lines = function(data) {
         .attr("class", "x_axis")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x)
-                .ticks(10)) //EMMA, dit is het aantal ticks op de x-as. Voor het geval je hem langer of korter maakt.
+                // .ticks(10)
+                .tickFormat(d3.format('d'))) //EMMA, dit is het aantal ticks op de x-as. Voor het geval je hem langer of korter maakt.
 
     var y = d3.scaleLinear()
       .domain([0, d3.max(data, function(d) { return +d.value; })])

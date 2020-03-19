@@ -46,7 +46,6 @@ function updateColors() {
         only_values = [],
         checked = getClickedColors();
 
-    console.log(checked);
     save_checked_col = checked[0];
     if (checked.length == 0) {
         save_checked_col = 'deeppink';
@@ -84,14 +83,19 @@ function updateColors() {
     var minValue = Math.min.apply(null, only_values),
         maxValue = Math.max.apply(null, only_values);
 
-    console.log(minValue)
-    console.log(maxValue)
+    // console.log(minValue)
+    // console.log(maxValue)
 
     // create color palette function
     var paletteScale = d3v3.scale.linear()
         .domain([minValue, maxValue])
         .range(["#141414", save_checked_col]);
 
+    if (save_checked_col == 'deeppink') {
+        paletteScale = d3v3.scale.linear()
+            .domain([minValue, maxValue])
+            .range(["green", "red"]);
+    }
 
     for (let i = 0; i < Object.keys(freq_obj).length; i++) {
         colour_obj[Object.keys(freq_obj)[i]] = paletteScale(freq_obj[Object.keys(freq_obj)[i]])
