@@ -223,6 +223,12 @@ function goLine() {
                 .domain([0, selected.length])
                 .range(["white", save_checked_col]);
 
+        if (save_checked_col == 'gray' || save_checked_col == 'white') {
+            color_scale = d3v3.scale.linear()
+                    .domain([0, selected.length])
+                    .range(["white", "#141414"]);
+        }
+
         var spans = [];
         var titl = "Paintings with the color " + save_checked_col + " for ";
         for (var i = 0; i < selected.length; i++) {

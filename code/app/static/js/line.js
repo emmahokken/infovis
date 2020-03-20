@@ -97,6 +97,12 @@ function makeLineGraph(selected, checked) {
                         .domain([0, selected.length])
                         .range(["white", checked]);
 
+                if (checked == 'gray' || checked == 'white') {
+                    color_scale = d3v3.scale.linear()
+                            .domain([0, selected.length])
+                            .range(["white", "#141414"]);
+                }
+
                 var x_axis = d3v3.svg.axis()
                     .scale(x_scale)
                     .orient("bottom")
