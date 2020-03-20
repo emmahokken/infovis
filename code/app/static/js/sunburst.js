@@ -1,27 +1,9 @@
 d3v5 = d3;
 window.d3 = null;
 
-class Session extends Map {
-  set(id, value) {
-    if (typeof value === 'object') value = JSON.stringify(value);
-    sessionStorage.setItem(id, value);
-  }
-
-  get(id) {
-    const value = sessionStorage.getItem(id);
-    try {
-      return JSON.parse(value);
-    } catch (e) {
-      return value;
-    }
-  }
-}
-
-const session = new Session();
-
 all_data = data;
 makeSunburst()
-var p;
+
 window.localStorage;
 // var locS = window.localStorage;
 
@@ -80,10 +62,10 @@ function getData() {
 
 function makeSunburst() {
 
-    var data = getData();
+    var sun_data = getData();
 
-    partition = data => {
-      const root = d3v5.hierarchy(data)
+    partition = sun_data => {
+      const root = d3v5.hierarchy(sun_data)
           .sum(d => d.value)
           .sort((a, b) => b.value - a.value);
       return d3v5.partition()
@@ -91,7 +73,7 @@ function makeSunburst() {
         (root);
     }
 
-    color = d3v5.scaleOrdinal(d3v5.quantize(d3v5.interpolateRainbow, data.children.length + 1))
+    color = d3v5.scaleOrdinal(d3v5.quantize(d3v5.interpolateRainbow, sun_data.children.length + 1))
     format = d3v5.format(",d")
     width = 932
     radius = width / 6
@@ -107,7 +89,7 @@ function makeSunburst() {
         // .attr("cx", "10")
 
 
-    const root = partition(data);
+    const root = partition(sun_data);
 
     root.each(d => d.current = d);
 
