@@ -54,10 +54,7 @@ function updateColors() {
         only_values = [],
         checked = getClickedColors();
 
-    console.log('heck');
-    console.log();
     save_checked_col = checked[0];
-
 
     // reset frequencies
     for (let i = 0; i < data.length; i++) {
