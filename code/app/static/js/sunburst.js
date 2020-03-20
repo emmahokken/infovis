@@ -1,8 +1,29 @@
 d3v5 = d3;
 window.d3 = null;
 
+class Session extends Map {
+  set(id, value) {
+    if (typeof value === 'object') value = JSON.stringify(value);
+    sessionStorage.setItem(id, value);
+  }
+
+  get(id) {
+    const value = sessionStorage.getItem(id);
+    try {
+      return JSON.parse(value);
+    } catch (e) {
+      return value;
+    }
+  }
+}
+
+const session = new Session();
+
 all_data = data;
 makeSunburst()
+var p;
+window.localStorage;
+// var locS = window.localStorage;
 
 function getData() {
 
@@ -136,6 +157,8 @@ function makeSunburst() {
         .attr("pointer-events", "all")
         .on("click", clicked);
 
+
+
     /*
 
         x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
@@ -184,12 +207,15 @@ function makeSunburst() {
             .attr("fill-opacity", d => 100)
             .attrTween("d", d => () => arc(d.current));
 
-            // update map colors
-            updateColors();
+
+        localStorage.setItem('color', p.data.name);
+        // update map colors
+        updateColors();
 
     }
 
 }
+
 
 function arcVisible(d) {
   return d.y1 <= 3 && d.y0 >= 1 && d.x1 > d.x0;

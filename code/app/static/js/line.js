@@ -99,7 +99,8 @@ function makeLineGraph(selected, checked) {
 
                 var x_axis = d3v3.svg.axis()
                     .scale(x_scale)
-                    .orient("bottom");
+                    .orient("bottom")
+                    .tickFormat(d3v3.format('d'));
 
                 var y_axis = d3v3.svg.axis()
                     .scale(y_scale)

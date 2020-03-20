@@ -418,7 +418,7 @@ slider.onChange(function(newRange){
     d3.select("#range-label").html(newRange.begin + " - " + newRange.end);
     console.log(newRange.begin, newRange.end) // Returned values from selected area in slider
 
-    document.getElementById('none').checked = true;
+    // document.getElementById('none').checked = true;
 
     // update map colors
     updateColors();

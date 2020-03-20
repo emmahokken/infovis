@@ -38,7 +38,7 @@ function makeLegend() {
     }
 
     // if a color is selected, display that color
-    if (checked.length > 0) {
+    if (checked[0] != 'flare') {
         // count frequency
         for (let i = 0; i < data.length; i++) {
             if (data[i]['creation_year'] > timespan[0] && data[i]['creation_year'] < timespan[1]
@@ -79,7 +79,7 @@ function makeLegend() {
         .domain([minValue, maxValue])
         .range(["#121212", checked[0]]);
 
-    if (checked[0] == 'deeppink') {
+    if (checked[0] == 'flare') {
         paletteScale = d3v3.scale.linear()
             .domain([minValue, maxValue])
             .range(["green", "red"]);

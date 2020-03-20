@@ -6,17 +6,25 @@ var save_checked_col;
 function getClickedColors() {
     var checked = [];
 
-    if (document.getElementById('none').checked == false) {
-        var checkboxes = d3v3.selectAll('input')
+    // if (document.getElementById('none').checked == false) {
+    //     var checkboxes = d3v3.selectAll('input')
+    //
+    //     // iterate over all checkboxes to see if it's checked
+    //     for (let i = 0; i < checkboxes[0].length; i++) {
+    //         // if checkbox is checked, add it to array
+    //         if (checkboxes[0][i].checked) {
+    //             checked.push(checkboxes[0][i].value)
+    //         }
+    //     }
+    // }
+    //
 
-        // iterate over all checkboxes to see if it's checked
-        for (let i = 0; i < checkboxes[0].length; i++) {
-            // if checkbox is checked, add it to array
-            if (checkboxes[0][i].checked) {
-                checked.push(checkboxes[0][i].value)
-            }
-        }
+    if (localStorage.getItem('color') == null) {
+        localStorage.setItem('color', 'flare')
     }
+
+    checked.push(localStorage.getItem('color'))
+
     //console.log(checked)
     return checked;
 }
@@ -46,11 +54,9 @@ function updateColors() {
         only_values = [],
         checked = getClickedColors();
 
+    console.log('heck');
+    console.log();
     save_checked_col = checked[0];
-    if (checked.length == 0) {
-        save_checked_col = 'deeppink';
-    }
-
 
 
     // reset frequencies
@@ -59,7 +65,7 @@ function updateColors() {
     }
 
     // if a color is selected, display that color
-    if (checked.length > 0) {
+    if (checked[0] != 'flare') {
         // count frequency
         for (let i = 0; i < data.length; i++) {
             if (data[i]['creation_year'] > timespan[0] && data[i]['creation_year'] < timespan[1]
@@ -91,7 +97,7 @@ function updateColors() {
         .domain([minValue, maxValue])
         .range(["#141414", save_checked_col]);
 
-    if (save_checked_col == 'deeppink') {
+    if (save_checked_col == 'flare') {
         paletteScale = d3v3.scale.linear()
             .domain([minValue, maxValue])
             .range(["green", "red"]);
@@ -244,6 +250,7 @@ function goLine() {
 
 // update map colors once content is loaded
 window.addEventListener('DOMContentLoaded', (event) => {
+    localStorage.clear()
     updateColors();
 });
 
