@@ -20,13 +20,13 @@ def cats():
 def map():
 
 	df = pd.read_csv('../../school_color.csv')
-	# df = df[:10000]
+	df = df[:600000]
 	data = df.to_json(orient='records')
 	countries = df['ctry_id'].unique()
 	countries = list(countries)
 
 	return render_template("map.html", data=data, countries=countries)
-	return render_template("map.html")
+
 
 @main.route('/sunburst', methods = ['GET', 'POST'])
 def sunburst():

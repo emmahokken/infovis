@@ -9,3 +9,10 @@
 .row align-items-center1{
     background-color: white;
 }
+
+.x_axis path,
+.x_axis line,
+.y.axis path,
+.y.axis line {
+    stroke: white;
+}

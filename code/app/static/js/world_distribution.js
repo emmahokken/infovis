@@ -17,7 +17,6 @@ var svg = d3.select("#world_dist")
 plot_lines = function(data) {
 
     var x = d3.scaleLinear()
-        // .domain([new Date(1400,2,13), new Date(2020, 2, 13)])
       .domain(d3.extent(data, function(d) { return d.date; }))
       .range([ 0, width ])
 
@@ -35,10 +34,10 @@ plot_lines = function(data) {
       .range([ height, 0 ]);
 
     svg.append("g")
-//      .attr("class", "y_axis")
-      .call(d3.axisLeft(y)
-        .ticks(4)) //EMMA, dit is het aantal ticks op de y-as. Voor het geval je hem hoger of lager maakt.
-        .attr("class", "aaa")
+        .attr("class", "y axis")
+        .call(d3.axisLeft(y)
+            .ticks(4)
+        )
 
     svg.append("path")
       .attr("class", "test")

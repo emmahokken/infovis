@@ -25,19 +25,16 @@
 .line {
   fill: none;
   stroke-width: 2.5px;
-  margin-top: -450px;
+  margin-top: -400px;
 }
 
 #line_title {
     margin-top: 40px;
-    /* position: center; */
-    margin-right: 100px;
-    margin-bottom: -20px;
     color: white;
+    margin-bottom: -40px;
+    margin-left: 250px;
 }
 
 .line_container {
-    margin-top: -100px;
-    background-color: darkred;
-    margin-bottom: -1400px;
+    /* background-color: darkred; */
 }
