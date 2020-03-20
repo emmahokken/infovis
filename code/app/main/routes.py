@@ -20,7 +20,7 @@ def cats():
 def map():
 
 	df = pd.read_csv('../../school_color.csv')
-	df = df[:600000]
+	# df = df[:100]
 	data = df.to_json(orient='records')
 	countries = df['ctry_id'].unique()
 	countries = list(countries)
